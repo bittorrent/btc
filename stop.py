@@ -1,0 +1,36 @@
+#! /usr/bin/env python
+
+import argparse
+import sys
+import time
+from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--delay', type=int, default=0)
+    args = parser.parse_args()
+
+    if sys.stdin.isatty():
+        error('no input')
+    torrents = sys.stdin.read()
+
+    try:
+        torrents = decoder.decode(torrents)
+    except ValueError:
+        error('unexpected input: %s' % torrents)
+
+    time.sleep(args.delay)
+
+    hashes = [t['hash'] for t in torrents]
+    for h in hashes:
+        client.stop_torrent(h)
+
+    # FIXME: wait for torrents to be stopped
+
+    if not sys.stdout.isatty():
+        d = list_to_dict(client.list_torrents(), 'hash')
+        d = dict((h, d[h]) for h in hashes if h in d)
+        print encoder.encode(dict_to_list(l))
+
+if __name__ == '__main__':
+    main()
