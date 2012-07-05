@@ -78,6 +78,10 @@ def main():
 
     try:
         module = __import__(sys.argv[1])
+        # FIXME: another module can have a main attribute
+        #        import only modules from btc...
+        if 'main' not in dir(module):
+            raise ImportError()
     except ImportError:
         error('no such command: %s' % sys.argv[1], False)
         print
