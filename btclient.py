@@ -47,7 +47,7 @@ class BTClient:
 
     def add_torrent_file(self, torrentFilePath):
         torrentFile = open(torrentFilePath, "rb")
-        self.send_command("action=add-file", torrentFile.read())
+        self.send_command("action=add-file", torrent_file=torrentFile.read())
         torrentFile.close()
 
     def remove_torrent(self, thash, keep_data=True, keep_torrent=False):
