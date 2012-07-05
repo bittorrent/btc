@@ -52,8 +52,10 @@ class BTClient:
 
     def remove_torrent(self, thash, keep_data=True, keep_torrent=False):
         cmd = None
-        if keep_data and not keep_torrent:
+        if keep_data and keep_torrent:
             cmd = "action=remove&hash=%s"
+        elif keep_data and not keep_torrent:
+            cmd = "action=removetorrent&hash=%s"
         elif keep_torrent and not keep_data:
             cmd = "action=removedata&hash=%s"
         elif not keep_torrent and not keep_data:
