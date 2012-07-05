@@ -2,6 +2,10 @@
 
 import argparse
 import btclient
+import time
+from bencode import bencode, bdecode
+import utils
+import hashlib
 from btc import encoder, decoder, client
 
 def main():
@@ -13,12 +17,24 @@ def main():
 
     if args.url is not None:
         client.add_torrent_url(args.url)
+        torrent = utils.get(args.url)
     else:
         client.add_torrent_file(args.file)
+        f = open(args.file, 'rb')
+        torrent = f.read()
+        f.close()
 
-    # FIXME: wait for torrent to be added
+    added = None
+    h = hashlib.sha1(bencode(bdecode(torrent)['info'])).hexdigest().lower()
+    while not added:
+        l = client.list_torrents()
+        for t in l:
+            if t['hash'] == h:
+                added = t
+                break
+        time.sleep(1)
 
-    # FIXME: print torrent info
+    print(encoder.encode([added]))
 
 if __name__ == '__main__':
     main()

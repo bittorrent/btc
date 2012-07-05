@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import time
 from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
 def main():
@@ -24,13 +25,16 @@ def main():
         client.remove_torrent(h, keep_data=not args.drop_data,
                               keep_torrent=args.keep_torrent)
 
-    # FIXME: wait for torrents to be removed, only if
-    # not args.keep_torrent ?!
-
-    if not sys.stdout.isatty():
-        d = list_to_dict(client.list_torrents(), 'hash')
-        d = dict((h, d[h]) for h in hashes if h in d)
-        print encoder.encode(dict_to_list(d, 'hash'))
+    while True:
+        l = client.list_torrents()
+        all_removed = True
+        for t in l:
+            if t['hash'] in hashes:
+                all_removed = False
+                break
+        if all_removed:
+            break
+        time.sleep(1)
 
 if __name__ == '__main__':
     main()

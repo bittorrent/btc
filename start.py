@@ -25,7 +25,19 @@ def main():
     for h in hashes:
         client.start_torrent(h)
 
-    # FIXME: wait for torrents to be started
+    while True:
+        d = list_to_dict(client.list_torrents(), 'hash')
+        all_started = True
+        for h in d:
+            if h not in hashes:
+                continue
+            if d[h]['state'] not in ('DOWNLOADING', 'SEEDING'):
+                all_started = False
+                break
+        if all_started:
+            break
+        time.sleep(1)
+
 
     if not sys.stdout.isatty():
         d = list_to_dict(client.list_torrents(), 'hash')
