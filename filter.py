@@ -4,7 +4,7 @@ import argparse
 import fnmatch
 import sys
 import re
-from btc import encoder, decoder
+from btc import encoder, decoder, error
 
 def main():
     parser = argparse.ArgumentParser()
