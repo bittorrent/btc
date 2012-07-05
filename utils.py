@@ -44,9 +44,13 @@ def post_multipart(host, selector, fields, files, username, password):
     h.request('POST', selector, body, headers)
     return h.getresponse().read()
 
-def get(host, selector, username, password):
-    base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+def get(host, selector="", username=None, password=None):
+    if username:
+        base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
     h = httplib.HTTPConnection(host)
-    headers = { 'Authorization': 'Basic %s' % base64string }
+    if username:
+        headers = { 'Authorization': 'Basic %s' % base64string }
+    else:
+        headers = {}
     h.request('GET', selector, "", headers)
     return h.getresponse().read()
