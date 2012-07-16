@@ -30,6 +30,12 @@ def main():
     for f in files:
         # FIXME: problems with \\ and /
         filename = args.output or f['name']
+
+        complete = float(f['downloaded']) / float(f['size']) * 100
+        if sys.stdout.isatty() and complete < 100.0:
+            print 'skipping uncomplete file: %s' % f['name']
+            continue
+
         if args.output and len(files) > 1:
             filename = f['name']
         if args.output and len(files) == 1:
@@ -43,8 +49,6 @@ def main():
 
         if sys.stdout.isatty():
             print 'downloading: %s' % os.path.join(args.directory, filename)
-
-        # FIXME: check if file complete
 
         client.torrent_download_file(f['sid'], f['fileid'], filename, args.directory)
 

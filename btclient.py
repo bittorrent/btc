@@ -138,25 +138,27 @@ class BTClient:
       return response
 
     def filesDict(self, response, sids={}):
-      responseDict = self.decoder.decode(response)
-      response = list()
+        responseDict = self.decoder.decode(response)
+        response = list()
 
-      h = None
-      for e in responseDict["files"]:
-        if isinstance(e, unicode):
-            h = e.lower()
-        elif isinstance(e, list):
-            i = 0
-            for l in e:
-                f = dict()
-                if h in sids:
-                    f['sid'] = sids[h]
-                f['fileid'] = i
-                f['hash'] = h
-                f['name'] = l[0]
-                f['downloaded'] = l[2]
-                f['priority'] = l[3]
-                f['progress'] = l[4]
-                response.append(f)
-                i += 1
-      return response
+        h = None
+        for e in responseDict["files"]:
+            if isinstance(e, unicode):
+                h = e.lower()
+            elif isinstance(e, list):
+                i = 0
+                for l in e:
+                    f = dict()
+                    if h in sids:
+                        f['sid'] = sids[h]
+                    f['fileid'] = i
+                    f['hash'] = h
+                    f['name'] = l[0]
+                    f['size'] = l[1]
+                    f['downloaded'] = l[2]
+                    f['priority'] = l[3]
+                    f['progress'] = l[4]
+                    response.append(f)
+                    i += 1
+
+        return response
