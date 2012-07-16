@@ -15,15 +15,8 @@ class BTClient:
         self.decoder = decoder
 
     def get_token_argument(self):
-       response = self.send_command(root='/gui/token.html', token=False)
-       htmlBefore = "<html><div id='token' style='display:none;'>"
-       htmlAfter = "</div></html>"
-       beforePos = response.index(htmlBefore)
-       afterPos = response.index(htmlAfter, beforePos)
-       tokenStart = beforePos + len(htmlBefore)
-       token = response[tokenStart:afterPos]
-       tokenArg = token
-       return tokenArg
+        response = self.send_command(root='/gui/token.html', token=False)
+        return re.findall(r"<html><div id='token' style='display:none;'>(.*)</div></html>", response)[0]
 
     def send_command(self, params='', root='/gui/', token=True, torrent_file=None):
         host = '%s:%s' % (self.host, self.port)
