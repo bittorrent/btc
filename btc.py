@@ -4,6 +4,7 @@ import re, os
 import json, sys
 import argparse
 import fileinput
+import collections
 from btclient import BTClient
 
 encoder = json.JSONEncoder(indent = 2)
@@ -75,6 +76,44 @@ def dict_to_list(d, key):
         new[key] = k
         l.append(new)
     return l
+
+def cmp_to_key(mycmp):
+    class K(object):
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K
+
+def cmp(a, b):
+    a = a[0]
+    b = b[0]
+    l = ['name', 'hash', 'sid', 'fileid']
+    if a == b:
+        return 0
+    elif a in l and b not in l:
+        return -1
+    elif b in l and a not in l:
+        return 1
+    elif a in l and b in l:
+        return l.index(a) < l.index(b) and -1 or 1
+    else:
+        return a < b and -1 or 1
+
+def ordered_dict(d1):
+    vals = sorted([(k, d1[k]) for k in d1.keys()], key=cmp_to_key(cmp))
+    d2 = collections.OrderedDict(vals)
+    return d2
 
 def main():
     if len(sys.argv) < 2:

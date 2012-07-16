@@ -2,7 +2,8 @@
 
 import argparse
 import fnmatch
-from btc import encoder, decoder, client
+from btc import encoder, decoder, client, ordered_dict
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -16,7 +17,8 @@ def main():
                 return x
             return x.lower()
         l = filter(lambda x: fnmatch.fnmatch(case(x['name']), case(args.name)), l)
-    print(encoder.encode(l))
+
+    print(encoder.encode([ordered_dict(d) for d in l]))
 
 if __name__ == '__main__':
     main()

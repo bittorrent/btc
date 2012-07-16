@@ -3,7 +3,8 @@
 import argparse
 import sys
 import fnmatch
-from btc import encoder, decoder, error, client
+from btc import encoder, decoder, error, client, ordered_dict
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -39,7 +40,7 @@ def main():
         matched = files
 
     matched = sorted(matched, key=lambda x: x['name'].lower())
-    print encoder.encode(matched)
+    print encoder.encode([ordered_dict(d) for d in matched])
 
 if __name__ == '__main__':
     main()
