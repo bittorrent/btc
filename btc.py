@@ -39,28 +39,17 @@ def error(msg, die=True):
 def warning(msg):
     sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
 
-def usage():
+def usage(commands):
     app = os.path.basename(sys.argv[0]).split(' ')[0]
-
-    commands = [
-        ('list', 'list client torrents'),
-        ('files', 'list files of torrents'),
-        ('add', 'add torrent to client'),
-        ('remove', 'remove torrent'),
-        ('start', 'start torrent'),
-        ('stop', 'stop torrent'),
-        ('download', 'download torrent file locally'),
-        ('stream', 'stream torrent file locally'),
-        ('wait', 'wait for torrent download to complete'),
-        ('filter', 'filter elements of a list'),
-        ('sort', 'sort elements of a list'),
-    ]
-
     print 'usage: %s <command> [<args>]' % app
     print
     print 'Commands are:'
-    for (command, info) in commands:
-        print '    %-10s: %s' % (command, info)
+    for c in commands:
+        if hasattr(commands[c], '_description'):
+            desc = commands[c]._description
+        else:
+            desc = 'NO _description DEFINED FOR SUBCOMMAND'
+        print '    %-10s: %s' % (c, desc)
 
 def list_to_dict(l, key):
     d = {}
@@ -116,22 +105,25 @@ def ordered_dict(d1):
     return d2
 
 def main():
+    commands = {}
+    for fp in os.listdir(os.path.dirname(__file__)):
+        if fp not in ['btc.py', 'utils.py', 'btclient.py'] \
+          and fp[0] != '.' and fp.endswith('.py'):
+            name = fp.rsplit('.', 1)[0]
+            module = __import__(name)
+            commands[name] = module
+
     if len(sys.argv) < 2:
-        usage()
+        usage(commands)
         exit(1)
 
-    try:
-        module = __import__(sys.argv[1])
-        # FIXME: another module can have a main attribute
-        #        import only modules from btc...
-        if 'main' not in dir(module):
-            raise ImportError()
-    except ImportError:
+    if sys.argv[1] not in commands:
         error('no such command: %s' % sys.argv[1], False)
         print
-        usage()
+        usage(commands)
         exit(1)
 
+    module = commands[sys.argv[1]]
     sys.argv[0] += ' %s' % sys.argv[1]
     del sys.argv[1]
     module.main()

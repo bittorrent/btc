@@ -5,6 +5,8 @@ import sys
 import os
 from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client
 
+_description = 'download torrent file locally'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', default='.')

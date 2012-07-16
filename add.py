@@ -8,6 +8,8 @@ import utils
 import hashlib
 from btc import encoder, decoder, client
 
+_description = 'add torrent to client'
+
 def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)

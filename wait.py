@@ -6,6 +6,8 @@ import sys
 import time
 from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
+_description = 'wait for torrents or files download to complete'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-H', '--host', default="127.0.0.1")

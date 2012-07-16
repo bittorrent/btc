@@ -5,6 +5,8 @@ import sys
 import time
 from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
+_description = 'remove torrent'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--drop-data', default=False, action="store_true")

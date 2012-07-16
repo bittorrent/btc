@@ -4,6 +4,8 @@ import argparse
 import sys
 from btc import encoder, decoder, error, list_to_dict, dict_to_list
 
+_description = 'sort elements of a list'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key', default='name')

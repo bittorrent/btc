@@ -7,6 +7,8 @@ import re
 import os
 from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
+_description = 'stream torrent file locally'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--command', default='mplayer')

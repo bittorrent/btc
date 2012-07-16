@@ -6,6 +6,8 @@ import sys
 import re
 from btc import encoder, decoder, error
 
+_description = 'filter elements of a list'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--nth', type=int, default=None)

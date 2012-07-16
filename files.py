@@ -5,6 +5,7 @@ import sys
 import fnmatch
 from btc import encoder, decoder, error, client, ordered_dict
 
+_description = 'list files of torrents'
 
 def main():
     parser = argparse.ArgumentParser()
