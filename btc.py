@@ -16,14 +16,19 @@ if os.path.exists(config_file):
     config = decoder.decode(_c.read())
     _c.close()
 
-host = "127.0.0.1"
-port = 8080
-if 'host' in config:
-    host = config['host']
-if 'port' in config:
-    port = config['port']
+default = {
+    'host': '127.0.0.1',
+    'port': 8080,
+    'username': 'admin',
+    'password': ''
+}
 
-client = BTClient(decoder, host, port)
+for k in default:
+    if k not in config:
+        config[k] = default[k]
+
+client = BTClient(decoder, config['host'], config['port'],
+                  config['username'], config['password'])
 
 def error(msg, die=True):
     sys.stderr.write('%s: error: %s\n' % (os.path.basename(sys.argv[0]), msg))

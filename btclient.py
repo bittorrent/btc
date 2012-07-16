@@ -7,12 +7,11 @@ import fileinput
 import utils
 
 class BTClient:
-    def __init__(self, decoder, host="127.0.0.1", port=8080):
+    def __init__(self, decoder, host='127.0.0.1', port=8080, username='admin', password=''):
         self.host = host
         self.port = port
-        # FIXME: security?
-        self.username = "admin"
-        self.password = ""
+        self.username = username
+        self.password = password
         self.decoder = decoder
 
     def get_token_argument(self):
