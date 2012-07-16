@@ -107,10 +107,10 @@ def ordered_dict(d1):
 def main():
     commands = {}
     for fp in os.listdir(os.path.dirname(__file__)):
-        if fp not in ['btc.py', 'utils.py', 'btclient.py'] \
-          and fp[0] != '.' and fp.endswith('.py'):
-            name = fp.rsplit('.', 1)[0]
-            module = __import__(name)
+        match = re.search(r'btc_(.*)\.py', fp)
+        if match:
+            name = match.group(1)
+            module = __import__('btc_%s' % name)
             commands[name] = module
 
     if len(sys.argv) < 2:
