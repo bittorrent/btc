@@ -27,15 +27,14 @@ class BTClient:
             return utils.post_multipart(host, url, [],
                                         [('torrent_file',
                                           'torrent.torrent', torrent_file)],
-                                        self.username,
-                                        self.password)
+                                        self.username, self.password)
         return utils.get(host, url, self.username, self.password)
 
     def list_torrents(self):
         return self.torrentList(self.send_command("list=1"))
 
     def add_torrent_url(self, url):
-       self.send_command("action=add-url&s=%s" % url)
+        self.send_command("action=add-url&s=%s" % url)
 
     def add_torrent_file(self, torrentFilePath):
         torrentFile = open(torrentFilePath, "rb")
@@ -55,10 +54,10 @@ class BTClient:
         self.send_command(cmd % thash)
 
     def stop_torrent(self, thash):
-       self.send_command("action=stop&hash=%s" % thash)
+        self.send_command("action=stop&hash=%s" % thash)
 
     def start_torrent(self, thash):
-       self.send_command("action=start&hash=%s" % thash)
+        self.send_command("action=start&hash=%s" % thash)
 
     def torrent_files(self, thash, sids={}):
         if isinstance(thash, list):
@@ -75,59 +74,50 @@ class BTClient:
         f.close()
 
     def torrent_stream_url(self, sid, fileid):
-        # FIXME: security?
         return "http://%s:%s@%s:%d/proxy?sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline" % \
           (self.username, self.password, self.host, self.port, sid, fileid)
 
     def torrentList(self, response):
-      # torrentList has one entry per torrent - each entry has a dictionary of data
-      responseDict = self.decoder.decode(response)
-      response = []
-      for torrentResponse in responseDict["torrents"]:
-        torrentDict = {}
-        response.append(torrentDict)
-        torrentDict["hash"] = str(torrentResponse[0].lower())
-        torrentDict["name"] = torrentResponse[2]
-        # FIXME: define options in config files to enable/disable fields
-        #torrentDict["distributed_copies"] = "0.000" # dummy value
-        torrentDict["dl_rate"] = torrentResponse[9]
-        torrentDict["done"] = torrentResponse[3] - torrentResponse[18]
-        torrentDict["eta"] = torrentResponse[10]
-        #torrentDict["max_dl_rate"] = -1 # dummy value
-        #torrentDict["max_ul_rate"] = -1 # dummy value
-        #torrentDict["payload_download"] = torrentResponse[5] # dummy value
-        #torrentDict["payload_upload"] = torrentResponse[5] # dummy value
-        #torrentDict["peers_connected"] = torrentResponse[12]
-        #torrentDict["peers_total"] = torrentResponse[13] # may have to dummy this
-        #torrentDict["private"] = 0 # dummy value
-        #torrentDict["seeds_connected"] = torrentResponse[14]
-        #torrentDict["seeds_total"] = torrentResponse[15] # may need to dummy this
-        torrentDict["size"] = torrentResponse[3]
-        torrentDict["sid"] = torrentResponse[22]
+        responseDict = self.decoder.decode(response)
+        response = []
+        for torrentResponse in responseDict["torrents"]:
+            torrentDict = {}
+            response.append(torrentDict)
+            torrentDict["hash"] = str(torrentResponse[0].lower())
+            torrentDict["name"] = torrentResponse[2]
+            torrentDict["dl_rate"] = torrentResponse[9]
+            torrentDict["done"] = torrentResponse[3] - torrentResponse[18]
+            torrentDict["eta"] = torrentResponse[10]
+            torrentDict["peers_connected"] = torrentResponse[12]
+            torrentDict["seeds_connected"] = torrentResponse[14]
+            torrentDict["size"] = torrentResponse[3]
+            torrentDict["sid"] = torrentResponse[22]
 
-        if 0 == torrentResponse[18]:
-          torrentDict["state"] = "FINISHED"
-          if torrentResponse[1] & 1:
-            torrentDict["state"] = "SEEDING"
-        elif (torrentResponse[1] & 2) or (torrentResponse[1] & 4):
-          torrentDict["state"] = "CHECKING_FILES"
-        elif torrentResponse[1] & 1:
-          torrentDict["state"] = "DOWNLOADING"
-        elif torrentResponse[1] == 128:
-          torrentDict["state"] = "QUEUED_FOR_CHECKING" # a guess
-        elif torrentResponse[1] == 136:
-          torrentDict["state"] = "STOPPED" # a guess
-        elif torrentResponse[1] == 200:
-          torrentDict["state"] = "CHECKING_FILES" # pretend still checking for compatibility
-        else:
-          torrentDict["state"] = "UNKNOWN"
+            if 0 == torrentResponse[18]:
+                torrentDict["state"] = "FINISHED"
+            if torrentResponse[1] & 1:
+                torrentDict["state"] = "SEEDING"
+            elif (torrentResponse[1] & 2) or (torrentResponse[1] & 4):
+                torrentDict["state"] = "CHECKING_FILES"
+            elif torrentResponse[1] & 1:
+                torrentDict["state"] = "DOWNLOADING"
+            elif torrentResponse[1] == 128:
+                torrentDict["state"] = "QUEUED_FOR_CHECKING"
+            elif torrentResponse[1] == 136:
+                torrentDict["state"] = "STOPPED"
+            elif torrentResponse[1] == 200:
+                torrentDict["state"] = "CHECKING_FILES"
+            else:
+                torrentDict["state"] = "UNKNOWN"
 
-        if torrentResponse[1] & 1 and (not (torrentResponse[1] & 2) and not (torrentResponse[1] & 4)):
-          torrentDict["stopped"] = False;
-        else:
-          torrentDict["stopped"] = True;
-        torrentDict["ul_rate"] = torrentResponse[8]
-      return response
+            if torrentResponse[1] & 1 and (not (torrentResponse[1] & 2) and not (torrentResponse[1] & 4)):
+                torrentDict["stopped"] = False
+            else:
+                torrentDict["stopped"] = True
+
+            torrentDict["ul_rate"] = torrentResponse[8]
+
+        return response
 
     def filesDict(self, response, sids={}):
         responseDict = self.decoder.decode(response)
