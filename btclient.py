@@ -16,19 +16,29 @@ class BTClient:
 
     def get_token_argument(self):
         response = self.send_command(root='/gui/token.html', token=False)
-        return re.findall(r"<html><div id='token' style='display:none;'>(.*)</div></html>", response)[0]
+        l = re.findall(r"<html><div id='token' style='display:none;'>(.*)</div></html>", response)
+        return l[0]
 
-    def send_command(self, params='', root='/gui/', token=True, torrent_file=None):
+    def send_command(self, params='', root='/gui/', token=True,
+                     torrent_file=None, username=None, password=None):
+
+        if username is None:
+            username = self.username
+        if password is None:
+            password = self.password
+
         host = '%s:%s' % (self.host, self.port)
         if token:
-            params = 'token=%s&%s' % (self.get_token_argument(), params)
-        url = '%s?%s' % (root, params)
+            token = self.get_token_argument()
+            params = 'token=%s&%s' % (token, params)
+        if params:
+            url = '%s?%s' % (root, params)
+        else:
+            url = root
         if torrent_file:
-            return utils.post_multipart(host, url, [],
-                                        [('torrent_file',
-                                          'torrent.torrent', torrent_file)],
-                                        self.username, self.password)
-        return utils.get(host, url, self.username, self.password)
+            return utils.post_multipart(host, url, [('torrent_file', torrent_file)],
+                                        [], username, password)
+        return utils.get(host, url, username, password)
 
     def list_torrents(self):
         return self.torrentList(self.send_command("list=1"))
