@@ -11,7 +11,7 @@ _description = 'stream torrent file locally'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--command', default='mplayer')
+    parser.add_argument('-c', '--command', default='echo')
     parser.add_argument('-t', '--together', default=False, action='store_true')
     args = parser.parse_args()
     args.command = re.sub(r'[ \t]+', ' ', args.command)
