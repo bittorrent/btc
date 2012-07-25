@@ -35,7 +35,7 @@ def main():
 
         complete = float(f['downloaded']) / float(f['size']) * 100
         if sys.stdout.isatty() and complete < 100.0:
-            print 'skipping uncomplete file: %s' % f['name']
+            print 'skipping incomplete file: %s' % f['name']
             continue
 
         if args.output and len(files) > 1:
