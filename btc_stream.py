@@ -28,17 +28,17 @@ def main():
     if args.together:
         call = args.command.split(' ')
         call += [client.torrent_stream_url(f['sid'], f['fileid']) for f in files]
-        subprocess.call(call)
         if sys.stdout.isatty():
             print 'running: %s' % ' '.join(call)
+        subprocess.call(call)
     else:
         for f in files:
             call = args.command.split(' ')
             url = client.torrent_stream_url(f['sid'], f['fileid'])
             call.append(url)
-            subprocess.call(call)
             if sys.stdout.isatty():
                 print 'running: %s' % ' '.join(call)
+            subprocess.call(call)
 
 if __name__ == '__main__':
     main()
