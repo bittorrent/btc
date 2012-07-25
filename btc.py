@@ -107,11 +107,17 @@ def ordered_dict(d1):
 def main():
     commands = {}
     for fp in os.listdir(os.path.dirname(__file__)):
-        match = re.search(r'btc_(.*)\.py', fp)
-        if match:
-            name = match.group(1)
-            module = __import__('btc_%s' % name)
-            commands[name] = module
+        match = re.match(r'btc_(.*)\.py', fp)
+
+        if not match:
+            continue
+
+        if len(sys.argv) >= 2 and match.group(1) != sys.argv[1]:
+            continue
+
+        name = match.group(1)
+        module = __import__('btc_%s' % name)
+        commands[name] = module
 
     if len(sys.argv) < 2:
         usage(commands)
