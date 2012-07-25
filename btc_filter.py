@@ -45,7 +45,7 @@ def main():
                 if args.case_sensitive:
                     return x
                 return x.lower()
-            if fnmatch.fnmatch(case(o[args.key]), case(args.name)):
+            if fnmatch.fnmatch(case(str(o[args.key])), case(args.name)):
                 new.append(o)
         elif args.equals is not None:
             if float(o[args.key]) == float(args.equals):
