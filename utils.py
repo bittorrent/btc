@@ -17,6 +17,9 @@ class Cookie (dict):
     def update(self, new):
         super(Cookie, self).update(Cookie(new))
 
+class HTTPError (Exception):
+    pass
+
 cookie = Cookie()
 
 def encode_multipart_formdata(fields, files):
@@ -70,6 +73,8 @@ def post_multipart(host, selector, fields, files, username, password):
 
     if response['status'] == '200' and 'set-cookie' in response:
         cookie.update(response['set-cookie'])
+    elif response['status'] != '200':
+        raise HTTPError(response['status'])
 
     return content
 
@@ -84,9 +89,15 @@ def get(host, selector="", username=None, password=None):
         headers = {}
 
     host = httpize(host)
-    response, content = h.request(host + selector, headers=headers)
+
+    try:
+        response, content = h.request(host + selector, headers=headers)
+    except httplib2.ServerNotFoundError:
+        raise HTTPError('404')
 
     if response['status'] == '200' and 'set-cookie' in response:
         cookie.update(response['set-cookie'])
+    elif response['status'] != '200':
+        raise HTTPError(response['status'])
 
     return content
