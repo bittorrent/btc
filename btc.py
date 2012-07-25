@@ -5,16 +5,32 @@ import json, sys
 import argparse
 import fileinput
 import collections
+import utils
 from btclient import BTClient
 
 encoder = json.JSONEncoder(indent = 2)
 decoder = json.JSONDecoder()
 
+def error(msg, die=True):
+    sys.stderr.write('%s: error: %s\n' % (os.path.basename(sys.argv[0]), msg))
+    if die:
+        exit(1)
+
+def warning(msg):
+    sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
+
 config_file = os.path.join(os.getenv('HOME'), '.btc')
 config = {}
+
 if os.path.exists(config_file):
     _c = open(config_file, 'r')
-    config = decoder.decode(_c.read())
+    content = _c.read()
+    try:
+        config = decoder.decode(content)
+    except:
+        msg = 'config file parse error: %s' % config_file
+        msg += '\n\ncontent is:\n%s' % content
+        error(msg)
     _c.close()
 
 default = {
@@ -31,13 +47,6 @@ for k in default:
 client = BTClient(decoder, config['host'], config['port'],
                   config['username'], config['password'])
 
-def error(msg, die=True):
-    sys.stderr.write('%s: error: %s\n' % (os.path.basename(sys.argv[0]), msg))
-    if die:
-        exit(1)
-
-def warning(msg):
-    sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
 
 def usage(commands):
     app = os.path.basename(sys.argv[0]).split(' ')[0]
@@ -132,7 +141,17 @@ def main():
     module = commands[sys.argv[1]]
     sys.argv[0] += ' %s' % sys.argv[1]
     del sys.argv[1]
-    module.main()
+
+    try:
+        module.main()
+    except utils.HTTPError:
+        verb = os.path.exists(config_file) and 'modify the' or 'create a'
+        msg = 'connection failed, try to %s settings file\n' % verb
+        msg += 'note: config file name is %s\n' % config_file
+        msg += 'note: curent settings are:\n'
+        for k in config:
+            msg += '    %8s: %s\n' % (k, config[k])
+        error(msg[0:len(msg) - 1], die=False)
 
     exit(0)
 

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import httplib2, mimetypes, base64
+import httplib2, mimetypes, base64, socket
 import re
 
 class Cookie (dict):
@@ -21,6 +21,7 @@ class HTTPError (Exception):
     pass
 
 cookie = Cookie()
+timeout = 2
 
 def encode_multipart_formdata(fields, files):
     """
@@ -53,6 +54,14 @@ def httpize(url):
         return 'http://{0}'.format(url)
     return url
 
+def make_request(http, *args, **kwargs):
+    try:
+        return http.request(*args, **kwargs)
+    except httplib2.ServerNotFoundError:
+        raise HTTPError('404')
+    except (socket.timeout, socket.error):
+        raise HTTPError('host does not answer')
+
 def post_multipart(host, selector, fields, files, username, password):
     """
     Post fields and files to an http host as multipart/form-data.
@@ -62,14 +71,14 @@ def post_multipart(host, selector, fields, files, username, password):
     """
     base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
     content_type, body = encode_multipart_formdata(fields, files)
-    h = httplib2.Http()
+    h = httplib2.Http(timeout=timeout)
     headers = { 'Authorization': 'Basic %s' % base64string,
                 'Content-Type': content_type,
                 'Content-Length': str(len(body)),
                 'Cookie': str(cookie) }
 
     host = httpize(host)
-    response, content = h.request(host + selector, method='POST', body=body, headers=headers)
+    response, content = make_request(h, host + selector, method='POST', body=body, headers=headers)
 
     if response['status'] == '200' and 'set-cookie' in response:
         cookie.update(response['set-cookie'])
@@ -81,7 +90,7 @@ def post_multipart(host, selector, fields, files, username, password):
 def get(host, selector="", username=None, password=None):
     if username:
         base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
-    h = httplib2.Http()
+    h = httplib2.Http(timeout=timeout)
     if username:
         headers = { 'Authorization': 'Basic %s' % base64string,
                     'Cookie': str(cookie) }
@@ -89,11 +98,7 @@ def get(host, selector="", username=None, password=None):
         headers = {}
 
     host = httpize(host)
-
-    try:
-        response, content = h.request(host + selector, headers=headers)
-    except httplib2.ServerNotFoundError:
-        raise HTTPError('404')
+    response, content = make_request(h, host + selector, headers=headers)
 
     if response['status'] == '200' and 'set-cookie' in response:
         cookie.update(response['set-cookie'])
