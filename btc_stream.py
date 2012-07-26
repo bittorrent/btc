@@ -11,10 +11,14 @@ _description = 'stream torrent file locally'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--command', default='echo')
+    parser.add_argument('-c', '--command', default=None)
     parser.add_argument('-t', '--together', default=False, action='store_true')
     args = parser.parse_args()
-    args.command = re.sub(r'[ \t]+', ' ', args.command)
+
+    if args.command:
+        args.command = re.sub(r'[ \t]+', ' ', args.command)
+    else:
+        warning('no stream command specified, outputing streaming links')
 
     if sys.stdin.isatty():
         error('no input')
@@ -29,26 +33,37 @@ def main():
         error('unexpected input: %s' % files)
 
     if args.together:
-        call = args.command.split(' ')
+        call = []
+        if args.command:
+            call = args.command.split(' ')
         for f in files:
             if 'fileid' not in f:
                 warning('ignoring non-file entry: %s' % f['name'])
                 continue
             call.append(client.torrent_stream_url(f['sid'], f['fileid']))
-        if sys.stdout.isatty():
+        if sys.stdout.isatty() and args.command:
             print 'running: %s' % ' '.join(call)
-        subprocess.call(call)
+            subprocess.call(call)
+        elif sys.stdout.isatty():
+            print 'asd'
+            for (f, url) in zip([f['name'] for f in files if 'fileid' in f], call):
+                print '%s: %s' % (f, url)
     else:
         for f in files:
             if 'fileid' not in f:
                 warning('ignoring non-file entry: %s' % f['name'])
                 continue
-            call = args.command.split(' ')
+            call = []
+            if args.command:
+                call = args.command.split(' ')
             url = client.torrent_stream_url(f['sid'], f['fileid'])
             call.append(url)
-            if sys.stdout.isatty():
+            if sys.stdout.isatty() and args.command:
                 print 'running: %s' % ' '.join(call)
-            subprocess.call(call)
+                subprocess.call(call)
+            elif sys.stdout.isatty():
+                for (f, url) in zip([f['name'] for f in files if 'fileid' in f], call):
+                    print '%s: %s' % (f, url)
 
 if __name__ == '__main__':
     main()
