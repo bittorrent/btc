@@ -5,7 +5,7 @@ import argparse
 import sys
 import re
 import os
-from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
+from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client
 
 _description = 'stream torrent file locally'
 
@@ -30,12 +30,19 @@ def main():
 
     if args.together:
         call = args.command.split(' ')
-        call += [client.torrent_stream_url(f['sid'], f['fileid']) for f in files]
+        for f in files:
+            if 'fileid' not in f:
+                warning('ignoring non-file entry: %s' % f['name'])
+                continue
+            call.append(client.torrent_stream_url(f['sid'], f['fileid']))
         if sys.stdout.isatty():
             print 'running: %s' % ' '.join(call)
         subprocess.call(call)
     else:
         for f in files:
+            if 'fileid' not in f:
+                warning('ignoring non-file entry: %s' % f['name'])
+                continue
             call = args.command.split(' ')
             url = client.torrent_stream_url(f['sid'], f['fileid'])
             call.append(url)

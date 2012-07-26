@@ -3,7 +3,7 @@
 import argparse
 import sys
 import fnmatch
-from btc import encoder, decoder, error, client, ordered_dict
+from btc import encoder, decoder, error, warning, client, ordered_dict
 
 _description = 'list files of torrents'
 
@@ -26,10 +26,19 @@ def main():
         error('unexpected input: %s' % torrents)
 
     sids = {}
+    hashes = []
     for t in torrents:
+        if 'hash' not in t or 'sid' not in t or 'fileid' in t:
+            warning('ignoring non-torrent entry')
+            continue
         sids[t['hash']] = t['sid']
+        hashes.append(t['hash'])
 
-    files = client.torrent_files([t['hash'] for t in torrents], sids)
+    if len(hashes) == 0:
+        print encoder.encode([])
+        exit(0)
+
+    files = client.torrent_files(hashes, sids)
     matched = []
     if args.name:
         for f in files:

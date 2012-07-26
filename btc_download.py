@@ -33,6 +33,10 @@ def main():
             warning('multiple files: --output is ignored')
 
     for f in files:
+        if 'fileid' not in f:
+            warning('ignoring non-file entry: %s' % f['name'])
+            continue
+
         # FIXME: problems with \\ and /
         filename = args.output or f['name']
 
