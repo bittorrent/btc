@@ -19,20 +19,23 @@ def error(msg, die=True):
 def warning(msg):
     sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
 
+original_config = {}
 config_file = os.path.join(os.getenv('HOME'), '.btc')
 config = {}
 
 if os.path.exists(config_file):
     _c = open(config_file, 'r')
     content = _c.read()
-    try:
-        config = decoder.decode(content)
-    except:
-        msg = 'config file parse error: %s' % config_file
-        msg += '\n\ncontent is:\n%s' % content
-        error(msg)
+    if len(content.strip()) != 0:
+        try:
+            original_config = decoder.decode(content)
+        except:
+            msg = 'config file parse error: %s' % config_file
+            msg += '\n\ncontent is:\n%s' % content
+            error(msg)
     _c.close()
 
+config = dict(original_config)
 default = {
     'host': '127.0.0.1',
     'port': 8080,
