@@ -152,6 +152,9 @@ def main():
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
         error(msg[0:len(msg) - 1], die=False)
+    except IOError:
+        # might be better to put `raise` when debugging
+        pass
 
     exit(0)
 
