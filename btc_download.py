@@ -17,6 +17,9 @@ def main():
         error('no input')
     files = sys.stdin.read()
 
+    if len(files.strip()) == 0:
+        exit(0)
+
     try:
         files = decoder.decode(files)
     except ValueError:

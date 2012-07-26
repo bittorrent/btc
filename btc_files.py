@@ -17,6 +17,9 @@ def main():
         error('no input torrents')
     torrents = sys.stdin.read()
 
+    if len(torrents.strip()) == 0:
+        exit(0)
+
     try:
         torrents = decoder.decode(torrents)
     except ValueError:

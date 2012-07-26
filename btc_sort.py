@@ -17,6 +17,9 @@ def main():
         error('no input')
     l = sys.stdin.read()
 
+    if len(l.strip()) == 0:
+        exit(0)
+
     try:
         l = decoder.decode(l)
     except ValueError:
