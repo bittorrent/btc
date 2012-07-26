@@ -3,7 +3,7 @@
 import argparse
 import sys
 import os
-from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client
+from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client, config
 
 _description = 'download torrent file locally'
 
@@ -11,7 +11,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', default='.')
     parser.add_argument('-o', '--output', default=None)
+    parser.add_argument('-w', '--windows', default=False, action='store_true',
+                        help='bittorrent client is running on windows')
     args = parser.parse_args()
+
+    if not args.windows and 'windows' in config:
+        args.windows = config['windows']
 
     if sys.stdin.isatty():
         error('no input')
@@ -37,7 +42,11 @@ def main():
             warning('ignoring non-file entry: %s' % f['name'])
             continue
 
-        # FIXME: problems with \\ and /
+        if args.windows and os.sep == '/':
+            f['name'] = f['name'].replace('\\', '/')
+        elif not args.windows and os.sep == '\\':
+            f['name'] = f['name'].replace('/', '\\')
+
         filename = args.output or f['name']
 
         complete = float(f['downloaded']) / float(f['size']) * 100
