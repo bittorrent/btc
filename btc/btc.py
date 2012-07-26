@@ -124,11 +124,9 @@ def main():
         if not match:
             continue
 
-        if len(sys.argv) >= 2 and match.group(1) != sys.argv[1]:
-            continue
-
         name = match.group(1)
-        module = __import__('btc_%s' % name)
+        module_name = 'btc_%s' % name
+        module = getattr(__import__('btc.%s' % module_name), module_name)
         commands[name] = module
 
     if len(sys.argv) < 2:
