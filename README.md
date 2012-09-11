@@ -8,7 +8,7 @@ Installation
 
 BTC is written in python and can be installed with pip:
 
-    $ pip -U https://github.com/bittorrent/btc/tarball/master
+    $ pip install -U https://github.com/bittorrent/btc/tarball/master
 
 If you were to make changes to the source code, which is welcome, you
 can fork the git repository on Github and install a development setup
