@@ -15,7 +15,6 @@ setup(
     install_requires = [
         'bencode',
         'httplib2',
-        'hashlib'
     ],
     entry_points = {
         'console_scripts': [

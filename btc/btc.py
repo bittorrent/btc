@@ -30,7 +30,7 @@ if os.path.exists(config_file):
         try:
             original_config = decoder.decode(content)
         except:
-            msg = 'config file parse error: %s' % config_file
+            msg = 'settings file parse error: %s' % config_file
             msg += '\n\ncontent is:\n%s' % content
             error(msg)
     _c.close()
@@ -148,7 +148,7 @@ def main():
     except utils.HTTPError:
         verb = os.path.exists(config_file) and 'modify the' or 'create a'
         msg = 'connection failed, try to %s settings file\n' % verb
-        msg += 'note: config file name is %s\n' % config_file
+	msg += 'note: settings file is: %s\n' % config_file
         msg += 'note: curent settings are:\n'
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
