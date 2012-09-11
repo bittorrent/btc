@@ -369,7 +369,7 @@ a streaming command using the `--command` option.
     video_6.mpg: http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=2&service=DOWNLOAD&qos=0&disposition=inline
     $ btc list | btc files | btc filter --nth 1 | btc stream --command mplayer
     running: mplayer http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=0&service=DOWNLOAD&qos=0&disposition=inline
-    $ btc list | btc files | btc stream --command mplayer --command mplayer
+    $ btc list | btc files | btc stream --command mplayer
     running: mplayer http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=0&service=DOWNLOAD&qos=0&disposition=inline
     running: mplayer http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=1&service=DOWNLOAD&qos=0&disposition=inline
     running: mplayer http://admin:@127.0.0.1:8080/proxy?sid=5d6264e&file=0&service=DOWNLOAD&qos=0&disposition=inline
@@ -380,7 +380,7 @@ If you want to play all the files using a single instance of the
 command you may use the option `--together` which has the following
 behavior:
 
-    $ btc list | btc files | btc stream --command mplayer --command mplayer --together
+    $ btc list | btc files | btc stream --command mplayer --together
     running: mplayer http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=0&service=DOWNLOAD&qos=0&disposition=inline http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=1&service=DOWNLOAD&qos=0&disposition=inline http://admin:@127.0.0.1:8080/proxy?sid=5d6264e&file=0&service=DOWNLOAD&qos=0&disposition=inline http://admin:@127.0.0.1:8080/proxy?sid=5d6264e&file=1&service=DOWNLOAD&qos=0&disposition=inline http://admin:@127.0.0.1:8080/proxy?sid=5deab0a&file=2&service=DOWNLOAD&qos=0&disposition=inline
 
 Here is the way to add a torrent by url or using a file on your
