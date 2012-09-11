@@ -26,10 +26,12 @@ def main():
         error('unexpected input: %s' % l)
 
     def key(x):
-        if (isinstance(x[args.key], str) or isinstance(x[args.key], unicode)) \
-               and not args.case_sensitive:
-            return x[args.key].lower()
-        return x[args.key]
+        key = x[args.key]
+        if ((isinstance(x[args.key], str)
+             or isinstance(x[args.key], unicode))
+            and not args.case_sensitive):
+            return key.lower()
+        return key
 
     l = sorted(l, key=key)
 

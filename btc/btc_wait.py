@@ -10,8 +10,6 @@ _description = 'wait for torrents or files download to complete'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-H', '--host', default="127.0.0.1")
-    parser.add_argument('-P', '--port', default=8080)
     parser.add_argument('-r', '--refresh-s', default=1)
     args = parser.parse_args()
 
@@ -54,8 +52,7 @@ def main():
 
         for (fileid, h, sid) in fileids:
             f = files_dict[h][fileid]
-            complete = float(f['downloaded']) / float(f['size']) * 100
-            if complete < 100.0:
+            if float(f['downloaded']) < float(f['size']):
                 all_finished = False
                 break
 

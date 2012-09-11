@@ -12,7 +12,7 @@ def main():
     parser.add_argument('-d', '--directory', default='.')
     parser.add_argument('-o', '--output', default=None)
     parser.add_argument('-w', '--windows', default=False, action='store_true',
-                        help='bittorrent client is running on windows')
+                        help='client is running on windows')
     args = parser.parse_args()
 
     if not args.windows and 'windows' in config:

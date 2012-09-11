@@ -18,7 +18,10 @@ def main():
 
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('-e', '--equals', default=None)
+    group.add_argument('-d', '--differs', default=None)
     group.add_argument('-g', '--greater', default=None)
+    group.add_argument('-G', '--greater-or-equal', default=None)
+    group.add_argument('-L', '--less-or-equal', default=None)
     group.add_argument('-l', '--less', default=None)
 
     group.add_argument('-T', '--true', dest='bool', default=None, action='store_true')
@@ -56,8 +59,17 @@ def main():
         elif args.equals is not None:
             if float(o[args.key]) == float(args.equals):
                 new.append(o)
+        elif args.differs is not None:
+            if float(o[args.key]) != float(args.equals):
+                new.append(o)
         elif args.greater is not None:
             if float(o[args.key]) > float(args.greater):
+                new.append(o)
+        elif args.greater_or_equal is not None:
+            if float(o[args.key]) >= float(args.greater):
+                new.append(o)
+        elif args.less_or_equal is not None:
+            if float(o[args.key]) <= float(args.less):
                 new.append(o)
         elif args.less is not None:
             if float(o[args.key]) < float(args.less):

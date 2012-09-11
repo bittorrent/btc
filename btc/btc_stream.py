@@ -45,9 +45,9 @@ def main():
             print 'running: %s' % ' '.join(call)
             subprocess.call(call)
         elif sys.stdout.isatty():
-            print 'asd'
-            for (f, url) in zip([f['name'] for f in files if 'fileid' in f], call):
-                print '%s: %s' % (f, url)
+            for (ff, url) in zip([f['name'] for f in files if 'fileid' in f], call):
+                print '%s' % url,
+            print
     else:
         for f in files:
             if 'fileid' not in f:
@@ -62,8 +62,7 @@ def main():
                 print 'running: %s' % ' '.join(call)
                 subprocess.call(call)
             elif sys.stdout.isatty():
-                for (f, url) in zip([f['name'] for f in files if 'fileid' in f], call):
-                    print '%s: %s' % (f, url)
+                print '%s: %s' % (f['name'], url)
 
 if __name__ == '__main__':
     main()
