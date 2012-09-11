@@ -6,7 +6,20 @@ import argparse
 import fileinput
 import collections
 import utils
+import atexit
 from btclient import BTClient
+
+def finish():
+    try:
+        sys.stdout.close()
+    except:
+        pass
+    try:
+        sys.stderr.close()
+    except:
+        pass
+
+atexit.register(finish)
 
 encoder = json.JSONEncoder(indent = 2)
 decoder = json.JSONDecoder()
