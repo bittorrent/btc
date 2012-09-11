@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 import argparse
 import fnmatch
 from btc import encoder, decoder, client, ordered_dict

@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 import httplib2, mimetypes, base64, socket
 import re
 

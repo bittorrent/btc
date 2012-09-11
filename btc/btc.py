@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 import re, os
 import json, sys
 import argparse
