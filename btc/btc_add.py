@@ -1,7 +1,7 @@
 import argparse
 import btclient
 import time
-from bencode import bencode, bdecode
+from bencode import bdecode, bencode
 import utils
 import hashlib
 import os

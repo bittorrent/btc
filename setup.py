@@ -13,7 +13,6 @@ setup(
     author_email = __author_email__,
     description = 'command line tool for remote bittorent client control',
     install_requires = [
-        'bencode',
         'httplib2',
     ],
     entry_points = {

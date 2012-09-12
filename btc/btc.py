@@ -159,7 +159,7 @@ def main():
     except utils.HTTPError:
         verb = os.path.exists(config_file) and 'modify the' or 'create a'
         msg = 'connection failed, try to %s settings file\n' % verb
-	msg += 'note: settings file is: %s\n' % config_file
+        msg += 'note: settings file is: %s\n' % config_file
         msg += 'note: curent settings are:\n'
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
