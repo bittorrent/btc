@@ -99,9 +99,10 @@ client. Let's say you want to stop the torrent named with all these
 
     $ btc list "A*" | btc stop
 
-This torrent is not going to be seeded anymore by uTorrent. This is
-the right moment to mention that `btc list` takes an optional argument
-which filters all the torrents by name allowing glob syntax. The
+This torrent is not going to be seeded anymore by uTorrent. Don't
+worry, you can restart it using the `start` command. This is the right
+moment to mention that `btc list` takes an optional argument which
+filters all the torrents by name allowing glob syntax. The
 `--case-sensitive` or the shorter `-s` options can be used to enforce
 case sensitivity. Some of you might think that it is a lot more
 complicated than doing `btc stop "A*"`. Fair enough, but what if you
