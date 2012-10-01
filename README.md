@@ -6,7 +6,7 @@ This project enables you to control uTorrent from the command line.
 Installation
 ------------
 
-BTC is written in python and can be installed with pip:
+BTC requires python 2.6.x or 2.7.x and can be installed using pip:
 
     $ pip install -U https://github.com/bittorrent/btc/tarball/master
 
