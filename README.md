@@ -36,13 +36,13 @@ and an empty settings file will be equivalent to:
     }
 
 In order to keep this file clean you can use `btc set` to change
-things in the settings file.
+settings.
 
     $ btc set host 192.168.1.10
     $ btc set port 8889
 
-If you want to remove a setting from the settings file and get the
-default back, you can use the `--delete` option to get rid of it.
+If you want to remove a setting and get the default back, you can use
+the `--delete` option to get rid of it.
 
     $ btc set --delete host
 
@@ -104,14 +104,8 @@ the right moment to mention that `btc list` takes an optional argument
 which filters all the torrents by name allowing glob syntax. The
 `--case-sensitive` or the shorter `-s` options can be used to enforce
 case sensitivity. Some of you might think that it is a lot more
-complicated than doing `btc stop "A*"`. Fair enough, but that kind of
-syntax would not allow that:
-
-    $ btc list | btc start
-
-You just started all your torrents without having to mention any of
-them. Still not convinced? What if you only want to stop torrents with
-a `dl_rate` of zero?
+complicated than doing `btc stop "A*"`. Fair enough, but what if you
+only want to stop torrents with a `dl_rate` of zero?
 
     $ btc list | btc filter --key dl_rate --equals 0 | btc stop
 
@@ -121,7 +115,7 @@ anything BTC outputs, not only torrents, but we will see that
 afterwards. The `filter` command can have multiple arguments (see `btc
 filter --help`) such as `--nth N` which select the N-th entry in a
 list or `--firsts N` which takes the N first entries of the
-list. Given a key supplied with `--key` each entry is gonna be
+list. Given a key supplied with `--key` each entry is going to be
 selected if:
 
     $ btc list | btc filter --key KEY "X*"        # it matches a string, supporting glob syntax
@@ -131,6 +125,7 @@ selected if:
     $ btc list | btc filter --key KEY --greater X # its numeric value is greater than X
     $ btc list | btc filter --key KEY --true      # it is the boolean value true
     $ btc list | btc filter --key KEY --false     # it is the boolean value false
+    ...
 
 Multiple filter commands can be piped one after the other for the
 output to match exactly what you want.
