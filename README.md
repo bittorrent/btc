@@ -106,7 +106,7 @@ case sensitivity. Some of you might think that it is a lot more
 complicated than doing `btc stop "A*"`. Fair enough, but what if you
 only want to stop torrents with a `dl_rate` of zero?
 
-    $ btc list | btc filter --key dl_rate --equals 0 | btc stop
+    $ btc list | btc filter --key dl_rate --numeric-equals 0 | btc stop
 
 As simple as that. The `filter` command is here to help you select the
 entries you want and reject the other ones. It can be used to filter
@@ -117,8 +117,8 @@ list or `--firsts N` which takes the N first entries of the
 list. Given a key supplied with `--key` each entry is going to be
 selected if:
 
-    $ btc list | btc filter --key KEY "X*"        # it matches a string, supporting glob syntax
-    $ btc list | btc filter --key KEY --equals X  # its numeric value equals X
+    $ btc list | btc filter --key KEY "X*"  # it matches a string, supporting glob syntax
+    $ btc list | btc filter --key KEY --numeric-equals X  # its numeric value equals X
     $ btc list | btc filter --key KEY --differs X # its numeric value differs from X
     $ btc list | btc filter --key KEY --less X    # its numeric value is less than X
     $ btc list | btc filter --key KEY --greater X # its numeric value is greater than X

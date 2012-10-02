@@ -8,34 +8,31 @@ _description = 'filter elements of a list'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--nth', type=int, default=None)
-    parser.add_argument('-f', '--firsts', type=int, default=None)
+    parser.add_argument('-n', '--nth', metavar='N', type=int, default=None)
+    parser.add_argument('-f', '--firsts', metavar='N', type=int, default=None)
+    parser.add_argument('-v', '--invert-match', default=False, action='store_true')
     parser.add_argument('-k', '--key', default='name')
-    parser.add_argument('-s', '--case-sensitive', default=False, action="store_true")
-    parser.add_argument('name', nargs='?', default=None)
+    parser.add_argument('-s', '--case-sensitive', default=False, action='store_true')
+    parser.add_argument('value', nargs='?', default=None)
 
     group = parser.add_mutually_exclusive_group(required=False)
-    group.add_argument('-e', '--equals', default=None)
-    group.add_argument('-d', '--differs', default=None)
-    group.add_argument('-g', '--greater', default=None)
-    group.add_argument('-G', '--greater-or-equal', default=None)
-    group.add_argument('-L', '--less-or-equal', default=None)
-    group.add_argument('-l', '--less', default=None)
-
-    group.add_argument('-T', '--true', dest='bool', default=None, action='store_true')
-    group.add_argument('-F', '--false', dest='bool', default=None, action='store_false')
+    group.add_argument('-e', '--numeric-equals', default=False, action='store_true')
+    group.add_argument('-d', '--differs', default=False, action='store_true')
+    group.add_argument('-G', '--greater', default=False, action='store_true')
+    group.add_argument('-g', '--greater-or-equal', default=False, action='store_true')
+    group.add_argument('-l', '--less-or-equal', default=False, action='store_true')
+    group.add_argument('-L', '--less', default=False, action='store_true')
+    group.add_argument('-T', '--true', default=False, action='store_true')
+    group.add_argument('-F', '--false', default=False, action='store_true')
 
     args = parser.parse_args()
 
-    if args.name and (args.equals or args.greater or args.less or args.bool):
-        parser.error('cannot specify name and number or boolean options')
+    if (args.value is not None) and (args.false or args.true):
+        parser.error('cannot specify value for boolean matching')
 
     if sys.stdin.isatty():
         error('no input')
     l = sys.stdin.read()
-
-    if len(l.strip()) == 0:
-        exit(0)
 
     if len(l.strip()) == 0:
         exit(0)
@@ -47,42 +44,51 @@ def main():
 
     new = list()
     for o in l:
-        if args.name is not None:
-            def case(x):
-                if args.case_sensitive:
-                    return x
-                return x.lower()
-            if fnmatch.fnmatch(case(str(o[args.key])), case(args.name)):
+        try:
+            if args.numeric_equals:
+                if float(o[args.key]) == float(args.value):
+                    new.append(o)
+            elif args.differs:
+                if float(o[args.key]) != float(args.value):
+                    new.append(o)
+            elif args.greater:
+                if float(o[args.key]) > float(args.value):
+                    new.append(o)
+            elif args.greater_or_equal:
+                if float(o[args.key]) >= float(args.value):
+                    new.append(o)
+            elif args.less_or_equal:
+                if float(o[args.key]) <= float(args.value):
+                    new.append(o)
+            elif args.less:
+                if float(o[args.key]) < float(args.value):
+                    new.append(o)
+            elif args.true:
+                if bool(o[args.key]):
+                    new.append(o)
+            elif args.false:
+                if not bool(o[args.key]):
+                    new.append(o)
+            elif args.value is not None:
+                def case(x):
+                    if args.case_sensitive:
+                        return x
+                    return x.lower()
+                if fnmatch.fnmatch(case(str(o[args.key])), case(args.value)):
+                    new.append(o)
+            else:
                 new.append(o)
-        elif args.equals is not None:
-            if float(o[args.key]) == float(args.equals):
-                new.append(o)
-        elif args.differs is not None:
-            if float(o[args.key]) != float(args.equals):
-                new.append(o)
-        elif args.greater is not None:
-            if float(o[args.key]) > float(args.greater):
-                new.append(o)
-        elif args.greater_or_equal is not None:
-            if float(o[args.key]) >= float(args.greater):
-                new.append(o)
-        elif args.less_or_equal is not None:
-            if float(o[args.key]) <= float(args.less):
-                new.append(o)
-        elif args.less is not None:
-            if float(o[args.key]) < float(args.less):
-                new.append(o)
-        elif args.bool is not None:
-            if bool(o[args.key]) is args.bool:
-                new.append(o)
-        else:
-            new.append(o)
+        except KeyError:
+            pass
 
     if args.firsts is not None:
         new = new[0:min(args.firsts,len(new))]
 
     if args.nth is not None:
         new = [new[args.nth - 1]]
+
+    if args.invert_match:
+        new = [o for o in l if o not in new]
 
     print encoder.encode(new)
 
