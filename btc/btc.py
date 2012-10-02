@@ -5,7 +5,7 @@ import fileinput
 import collections
 import utils
 import atexit
-from btclient import BTClient
+from btclient import BTClient, BTClientError
 
 def finish():
     try:
@@ -164,6 +164,8 @@ def main():
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
         error(msg[0:len(msg) - 1], die=False)
+    except BTClientError as e:
+        error(e.message)
     except IOError:
         # might be better to put `raise` when debugging
         pass

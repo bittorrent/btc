@@ -4,6 +4,9 @@ import argparse
 import fileinput
 import utils
 
+class BTClientError(Exception):
+    pass
+
 class BTClient:
     def __init__(self, decoder, host='127.0.0.1', port=8080, username='admin', password=''):
         self.host = host
@@ -34,9 +37,21 @@ class BTClient:
         else:
             url = root
         if torrent_file:
-            return utils.post_multipart(host, url, [('torrent_file', torrent_file)],
+            ret = utils.post_multipart(host, url, [('torrent_file', torrent_file)],
                                         [], username, password)
-        return utils.get(host, url, username, password)
+        else:
+            ret = utils.get(host, url, username, password)
+
+        try:
+            ret_json = json.loads(ret)
+            if 'error' in ret_json:
+                raise BTClientError(ret_json['error'])
+        except BTClientError:
+            raise
+        except: # Output might not be JSON
+            pass
+
+        return ret
 
     def list_torrents(self):
         return self.torrentList(self.send_command("list=1"))
