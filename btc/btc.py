@@ -166,6 +166,8 @@ def main():
         error(msg[0:len(msg) - 1], die=False)
     except BTClientError as e:
         error(e.message)
+    except KeyboardInterrupt:
+        pass
     except IOError:
         # might be better to put `raise` when debugging
         pass
