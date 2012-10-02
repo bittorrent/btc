@@ -41,7 +41,7 @@ def main():
                 break
 
         files = client.torrent_files([f[1] for f in fileids],
-                                     [f[2] for f in fileids])
+                                     dict([(f[1], f[2]) for f in fileids]))
 
         files_hashes = set([f['hash'] for f in files])
         files_dict = dict([(h, dict()) for h in files_hashes])
