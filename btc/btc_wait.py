@@ -28,7 +28,7 @@ def main():
                if 'fileid' in t]
 
     while True:
-        if len(fileids) == 0:
+        if len(fileids) == 0 and len(hashes) == 0:
             break
 
         d = list_to_dict(client.list_torrents(), 'hash')
@@ -36,7 +36,7 @@ def main():
         all_finished = True
 
         for h in hashes:
-            if d[h]['state'] != 'FINISHED' and d[h]['state'] != 'SEEDING':
+            if d[h]['state'] not in ('FINISHED', 'SEEDING', 'QUEUED_SEED'):
                 all_finished = False
                 break
 

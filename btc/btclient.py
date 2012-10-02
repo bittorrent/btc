@@ -54,42 +54,44 @@ class BTClient:
         return ret
 
     def list_torrents(self):
-        return self.torrentList(self.send_command("list=1"))
+        return self.torrent_list(self.send_command('list=1'))
 
     def add_torrent_url(self, url):
-        self.send_command("action=add-url&s=%s" % url)
+        self.send_command('action=add-url&s=%s' % url)
 
-    def add_torrent_file(self, torrentFilePath):
-        torrentFile = open(torrentFilePath, "rb")
-        self.send_command("action=add-file", torrent_file=torrentFile.read())
-        torrentFile.close()
+    def add_torrent_file(self, torrent_file_path):
+        torrent_file = open(torrent_file_path, 'rb')
+        self.send_command('action=add-file', torrent_file=torrent_file.read())
+        torrent_file.close()
 
     def remove_torrent(self, thash, keep_data=True, keep_torrent=False):
         cmd = None
         if keep_data and keep_torrent:
-            cmd = "action=remove&hash=%s"
+            cmd = 'action=remove&hash=%s'
         elif keep_data and not keep_torrent:
-            cmd = "action=removetorrent&hash=%s"
+            cmd = 'action=removetorrent&hash=%s'
         elif keep_torrent and not keep_data:
-            cmd = "action=removedata&hash=%s"
+            cmd = 'action=removedata&hash=%s'
         elif not keep_torrent and not keep_data:
-            cmd = "action=removedatatorrent&hash=%s"
+            cmd = 'action=removedatatorrent&hash=%s'
         self.send_command(cmd % thash)
 
     def stop_torrent(self, thash):
-        self.send_command("action=stop&hash=%s" % thash)
+        self.send_command('action=stop&hash=%s' % thash)
 
     def start_torrent(self, thash):
-        self.send_command("action=start&hash=%s" % thash)
+        self.send_command('action=start&hash=%s' % thash)
 
     def torrent_files(self, thash, sids={}):
         if isinstance(thash, list):
+            if len(thash) == 0:
+                return {}
             thash = '&hash='.join(thash)
-        l = self.send_command("action=getfiles&format=json&hash=%s" % thash)
-        return self.filesDict(l, sids)
+        l = self.send_command('action=getfiles&format=json&hash=%s' % thash)
+        return self.files_dict(l, sids)
 
     def torrent_download_file(self, sid, fileid, name, path='.'):
-        cmd = "sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline" % (sid, fileid)
+        cmd = 'sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline' % (sid, fileid)
         content = self.send_command(cmd, root='/proxy', token=False)
         filename = os.path.join(path, name)
         f = open(filename, 'w')
@@ -97,59 +99,38 @@ class BTClient:
         f.close()
 
     def torrent_stream_url(self, sid, fileid):
-        return "http://%s:%s@%s:%d/proxy?sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline" % \
+        return 'http://%s:%s@%s:%d/proxy?sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline' % \
           (self.username, self.password, self.host, self.port, sid, fileid)
 
-    def torrentList(self, response):
-        responseDict = self.decoder.decode(response)
+    def torrent_list(self, response):
+        response_dict = self.decoder.decode(response)
         response = []
-        for torrentResponse in responseDict["torrents"]:
-            torrentDict = {}
-            response.append(torrentDict)
-            torrentDict["hash"] = str(torrentResponse[0].lower())
-            torrentDict["name"] = torrentResponse[2]
-            torrentDict["dl_rate"] = torrentResponse[9]
-            torrentDict["done"] = torrentResponse[3] - torrentResponse[18]
-            torrentDict["eta"] = torrentResponse[10]
-            torrentDict["peers_connected"] = torrentResponse[12]
-            torrentDict["seeds_connected"] = torrentResponse[14]
-            torrentDict["size"] = torrentResponse[3]
-            torrentDict["sid"] = torrentResponse[22]
-
-            if 0 == torrentResponse[18]:
-                torrentDict["state"] = "FINISHED"
-            if torrentResponse[1] & 1:
-                torrentDict["state"] = "SEEDING"
-            elif (torrentResponse[1] & 2) or (torrentResponse[1] & 4):
-                torrentDict["state"] = "CHECKING_FILES"
-            elif torrentResponse[1] & 1:
-                torrentDict["state"] = "DOWNLOADING"
-            elif torrentResponse[1] == 128:
-                torrentDict["state"] = "QUEUED_FOR_CHECKING"
-            elif torrentResponse[1] == 136:
-                torrentDict["state"] = "STOPPED"
-            elif torrentResponse[1] == 200:
-                torrentDict["state"] = "CHECKING_FILES"
-            else:
-                torrentDict["state"] = "UNKNOWN"
-
-            if torrentResponse[1] & 1 and (not (torrentResponse[1] & 2) and not (torrentResponse[1] & 4)):
-                torrentDict["stopped"] = False
-            else:
-                torrentDict["stopped"] = True
-
-            torrentDict["ul_rate"] = torrentResponse[8]
+        for torrent_response in response_dict['torrents']:
+            torrent_dict = {}
+            response.append(torrent_dict)
+            torrent_dict['hash'] = str(torrent_response[0].upper())
+            torrent_dict['name'] = torrent_response[2]
+            torrent_dict['done'] = torrent_response[3] - torrent_response[18]
+            torrent_dict['eta'] = torrent_response[10]
+            torrent_dict['peers_connected'] = torrent_response[12]
+            torrent_dict['seeds_connected'] = torrent_response[14]
+            torrent_dict['size'] = torrent_response[3]
+            torrent_dict['state'] = torrent_response[21].upper().replace('[F] ', '').replace(' ', '_')
+            torrent_dict['sid'] = torrent_response[22]
+            torrent_dict['ul_rate'] = torrent_response[8]
+            torrent_dict['dl_rate'] = torrent_response[9]
+            torrent_dict['progress'] = round(100 * float(torrent_dict['done']) / torrent_dict['size'], 2)
 
         return response
 
-    def filesDict(self, response, sids={}):
-        responseDict = self.decoder.decode(response)
+    def files_dict(self, response, sids={}):
+        response_dict = self.decoder.decode(response)
         response = list()
 
         h = None
-        for e in responseDict["files"]:
+        for e in response_dict['files']:
             if isinstance(e, unicode):
-                h = e.lower()
+                h = e.upper()
             elif isinstance(e, list):
                 i = 0
                 for l in e:
@@ -157,12 +138,12 @@ class BTClient:
                     if h in sids:
                         f['sid'] = sids[h]
                     f['fileid'] = i
-                    f['hash'] = h
+                    f['hash'] = h.upper()
                     f['name'] = l[0]
                     f['size'] = l[1]
                     f['downloaded'] = l[2]
                     f['priority'] = l[3]
-                    f['progress'] = l[4]
+                    f['progress'] = round(100 * float(f['downloaded']) / f['size'])
                     response.append(f)
                     i += 1
 

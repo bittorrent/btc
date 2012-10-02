@@ -61,7 +61,7 @@ actions. Everything beggins with the `list` command.
     [
       {
         "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "sid": "5deab0a",
         "dl_rate": 0,
         "done": 815997472,
@@ -69,12 +69,11 @@ actions. Everything beggins with the `list` command.
         "seeds_connected": 0,
         "size": 815997472,
         "state": "SEEDING",
-        "stopped": false,
         "ul_rate": 0
       },
       {
         "name": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "sid": "5d6264e",
         "dl_rate": 0,
         "done": 477507449,
@@ -82,7 +81,6 @@ actions. Everything beggins with the `list` command.
         "seeds_connected": 0,
         "size": 477507449,
         "state": "SEEDING",
-        "stopped": false,
         "ul_rate": 0
       }
     ]
@@ -140,32 +138,29 @@ these torrents.
     [
       {
         "name": "audio_1.mp3",
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "sid": "5deab0a",
         "fileid": 0,
         "downloaded": 6579667,
         "priority": 2,
-        "progress": 0,
         "size": 6579667
       },
       {
         "name": "image_1.jpeg",
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "sid": "5deab0a",
         "fileid": 1,
         "downloaded": 384077,
         "priority": 2,
-        "progress": 25,
         "size": 384077
       },
       {
         "name": "video_6.mpg",
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "sid": "5deab0a",
         "fileid": 2,
         "downloaded": 809033728,
         "priority": 2,
-        "progress": 26,
         "size": 809033728
       }
     ]
@@ -182,52 +177,47 @@ for instance. You can also reverse the sort by using the option
     $ btc list | btc files | btc sort
     [
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "audio_1.mp3",
         "priority": 2,
         "downloaded": 6579667,
         "sid": "5deab0a",
-        "progress": 0,
         "size": 6579667,
         "fileid": 0
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "image_1.jpeg",
         "priority": 2,
         "downloaded": 384077,
         "sid": "5deab0a",
-        "progress": 25,
         "size": 384077,
         "fileid": 1
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "image_2.jpg",
         "priority": 2,
         "downloaded": 3386455,
         "sid": "5d6264e",
-        "progress": 0,
         "size": 3386455,
         "fileid": 0
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "video_14.avi",
         "priority": 2,
         "downloaded": 474120994,
         "sid": "5d6264e",
-        "progress": 12,
         "size": 474120994,
         "fileid": 1
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "video_6.mpg",
         "priority": 2,
         "downloaded": 809033728,
         "sid": "5deab0a",
-        "progress": 26,
         "size": 809033728,
         "fileid": 2
       }
@@ -236,52 +226,47 @@ for instance. You can also reverse the sort by using the option
     $ btc list | btc files | btc sort --key size
     [
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "image_1.jpeg",
         "priority": 2,
         "downloaded": 384077,
         "sid": "5deab0a",
-        "progress": 25,
         "size": 384077,
         "fileid": 1
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "image_2.jpg",
         "priority": 2,
         "downloaded": 3386455,
         "sid": "5d6264e",
-        "progress": 0,
         "size": 3386455,
         "fileid": 0
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "audio_1.mp3",
         "priority": 2,
         "downloaded": 6579667,
         "sid": "5deab0a",
-        "progress": 0,
         "size": 6579667,
         "fileid": 0
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "video_14.avi",
         "priority": 2,
         "downloaded": 474120994,
         "sid": "5d6264e",
-        "progress": 12,
         "size": 474120994,
         "fileid": 1
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "video_6.mpg",
         "priority": 2,
         "downloaded": 809033728,
         "sid": "5deab0a",
-        "progress": 26,
         "size": 809033728,
         "fileid": 2
       }
@@ -290,52 +275,47 @@ for instance. You can also reverse the sort by using the option
     $ btc list | btc files | btc sort --key size --reverse
     [
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "video_6.mpg",
         "priority": 2,
         "downloaded": 809033728,
         "sid": "5deab0a",
-        "progress": 26,
         "size": 809033728,
         "fileid": 2
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "video_14.avi",
         "priority": 2,
         "downloaded": 474120994,
         "sid": "5d6264e",
-        "progress": 12,
         "size": 474120994,
         "fileid": 1
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "audio_1.mp3",
         "priority": 2,
         "downloaded": 6579667,
         "sid": "5deab0a",
-        "progress": 0,
         "size": 6579667,
         "fileid": 0
       },
       {
-        "hash": "779e32e8d82521a3472fe6f93c0b29984a7fb411",
+        "hash": "779E32E8D82521A3472FE6F93C0B29984A7FB411",
         "name": "image_2.jpg",
         "priority": 2,
         "downloaded": 3386455,
         "sid": "5d6264e",
-        "progress": 0,
         "size": 3386455,
         "fileid": 0
       },
       {
-        "hash": "45097eb957fd45ee657a442b16f702251cbb8e35",
+        "hash": "45097EB957FD45EE657A442B16F702251CBB8E35",
         "name": "image_1.jpeg",
         "priority": 2,
         "downloaded": 384077,
         "sid": "5deab0a",
-        "progress": 25,
         "size": 384077,
         "fileid": 1
       }

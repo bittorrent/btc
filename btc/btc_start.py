@@ -34,7 +34,7 @@ def main():
         for h in d:
             if h not in hashes:
                 continue
-            if d[h]['state'] not in ('DOWNLOADING', 'SEEDING'):
+            if d[h]['state'] not in ('DOWNLOADING', 'SEEDING', 'QUEUED_SEED'):
                 all_started = False
                 break
         if all_started:

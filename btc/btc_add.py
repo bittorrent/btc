@@ -47,7 +47,7 @@ def main():
     except:
         error('invalid torrent file')
 
-    h = hashlib.sha1(encoded).hexdigest().lower()
+    h = hashlib.sha1(encoded).hexdigest().upper()
     while not added:
         l = client.list_torrents()
         for t in l:
