@@ -31,7 +31,9 @@ def warning(msg):
     sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
 
 original_config = {}
-config_file = os.path.join(os.getenv('HOME'), '.btc')
+env_config_file = os.getenv('BTC_CONFIG_FILE')
+home_config_file = os.path.join(os.getenv('HOME'), '.btc')
+config_file = env_config_file if env_config_file else home_config_file
 config = {}
 
 if os.path.exists(config_file):

@@ -46,6 +46,10 @@ the `--delete` option to get rid of it.
 
     $ btc set --delete host
 
+Finally if you want to use a configuration file named differently you
+can set then environment variable `BTC_CONFIG_FILE` to another
+absolute path.
+
 Usage
 -----
 
