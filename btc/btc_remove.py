@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
 
     if sys.stdin.isatty():
-        parser.error('no input torrents')
+        parser.error('no input, pipe another btc command output into this command')
     torrents = sys.stdin.read()
 
     if len(torrents.strip()) == 0:

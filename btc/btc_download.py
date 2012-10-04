@@ -17,7 +17,7 @@ def main():
         args.windows = config['windows']
 
     if sys.stdin.isatty():
-        parser.error('no input')
+        parser.error('no input, pipe another btc command output into this command')
     files = sys.stdin.read()
 
     if len(files.strip()) == 0:

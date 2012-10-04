@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
 
     if sys.stdin.isatty():
-        parser.error('no input')
+        parser.error('no input, pipe another btc command output into this command')
     l = sys.stdin.read()
 
     if len(l.strip()) == 0:
