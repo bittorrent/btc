@@ -66,13 +66,15 @@ def usage(commands):
     app = os.path.basename(sys.argv[0]).split(' ')[0]
     print 'usage: %s <command> [<args>]' % app
     print
-    print 'Commands are:'
+    print 'commands are:'
     for c in commands:
         if hasattr(commands[c], '_description'):
             desc = commands[c]._description
         else:
             desc = 'NO _description DEFINED FOR SUBCOMMAND'
         print '    %-10s: %s' % (c, desc)
+    print
+    print "hint: try to run 'btc list' to begin"
 
 def list_to_dict(l, key):
     d = {}
@@ -160,9 +162,10 @@ def main():
         verb = os.path.exists(config_file) and 'modify the' or 'create a'
         msg = 'connection failed, try to %s settings file\n' % verb
         msg += 'note: settings file is: %s\n' % config_file
-        msg += 'note: curent settings are:\n'
+        msg += 'note: current settings are:\n'
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
+        msg += "hint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1], die=False)
     except BTClientError as e:
         error(e.message)
