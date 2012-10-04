@@ -74,6 +74,7 @@ def usage(commands):
             desc = 'NO _description DEFINED FOR SUBCOMMAND'
         print '    %-10s: %s' % (c, desc)
     print
+    print "hint: use any command and --help if lost"
     print "hint: try to run 'btc list' to begin"
 
 def list_to_dict(l, key):
