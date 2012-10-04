@@ -8,16 +8,24 @@ _description = 'filter elements of a list'
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--nth', metavar='N', type=int, default=None)
-    parser.add_argument('-f', '--firsts', metavar='N', type=int, default=None)
-    parser.add_argument('-v', '--invert-match', default=False, action='store_true')
-    parser.add_argument('-k', '--key', default='name')
+    parser.add_argument('-n', '--nth', metavar='N',
+                        help='select the Nth entry (1-based)',
+                        type=int, default=None)
+    parser.add_argument('-f', '--first', metavar='N',
+                        help='select the N first entires',
+                        type=int, default=None)
+    parser.add_argument('-v', '--invert-match', default=False, action='store_true',
+                        help='select all entries but the ones that match')
+    parser.add_argument('-k', '--key', default='name',
+                        help='change the key used for the match (default is name)')
     parser.add_argument('-s', '--case-sensitive', default=False, action='store_true')
-    parser.add_argument('value', nargs='?', default=None)
+
+    parser.add_argument('value', metavar='VALUE', nargs='?', default=None,
+                        help='string to match if no numeric or boolean operator is used')
 
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('-e', '--numeric-equals', default=False, action='store_true')
-    group.add_argument('-d', '--differs', default=False, action='store_true')
+    group.add_argument('-d', '--numeric-differs', default=False, action='store_true')
     group.add_argument('-G', '--greater', default=False, action='store_true')
     group.add_argument('-g', '--greater-or-equal', default=False, action='store_true')
     group.add_argument('-l', '--less-or-equal', default=False, action='store_true')
@@ -48,7 +56,7 @@ def main():
             if args.numeric_equals:
                 if float(o[args.key]) == float(args.value):
                     new.append(o)
-            elif args.differs:
+            elif args.numeric_differs:
                 if float(o[args.key]) != float(args.value):
                     new.append(o)
             elif args.greater:
@@ -80,9 +88,11 @@ def main():
                 new.append(o)
         except KeyError:
             pass
+        except ValueError as e:
+            error(e.message)
 
-    if args.firsts is not None:
-        new = new[0:min(args.firsts,len(new))]
+    if args.first is not None:
+        new = new[0:min(args.first,len(new))]
 
     if args.nth is not None:
         new = [new[args.nth - 1]]

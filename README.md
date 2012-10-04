@@ -113,13 +113,13 @@ entries you want and reject the other ones. It can be used to filter
 anything BTC outputs, not only torrents, but we will see that
 afterwards. The `filter` command can have multiple arguments (see `btc
 filter --help`) such as `--nth N` which select the N-th entry in a
-list or `--firsts N` which takes the N first entries of the
+list or `--first N` which takes the N first entries of the
 list. Given a key supplied with `--key` each entry is going to be
 selected if:
 
     $ btc list | btc filter --key KEY "X*"  # it matches a string, supporting glob syntax
     $ btc list | btc filter --key KEY --numeric-equals X  # its numeric value equals X
-    $ btc list | btc filter --key KEY --differs X # its numeric value differs from X
+    $ btc list | btc filter --key KEY --numeric-differs X # its numeric value differs from X
     $ btc list | btc filter --key KEY --less X    # its numeric value is less than X
     $ btc list | btc filter --key KEY --greater X # its numeric value is greater than X
     $ btc list | btc filter --key KEY --true      # it is the boolean value true
