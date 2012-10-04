@@ -168,7 +168,7 @@ def main():
         msg += 'note: current settings are:\n'
         for k in config:
             msg += '    %8s: %s\n' % (k, config[k])
-        msg += "hint: you can use 'btc set key value' to modify settings\n"
+        msg += "\nhint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1], die=False)
     except BTClientError as e:
         error(e.message)
