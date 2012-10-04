@@ -41,7 +41,10 @@ def main():
             call.append(client.torrent_stream_url(f['sid'], f['fileid']))
         if sys.stdout.isatty() and args.command:
             print 'running: %s' % ' '.join(call)
-            subprocess.call(call)
+            try:
+                subprocess.call(call)
+            except OSError as e:
+                error(e.strerror)
         elif sys.stdout.isatty():
             for (ff, url) in zip([f['name'] for f in files if 'fileid' in f], call):
                 print '%s' % url,
@@ -58,7 +61,10 @@ def main():
             call.append(url)
             if sys.stdout.isatty() and args.command:
                 print 'running: %s' % ' '.join(call)
-                subprocess.call(call)
+                try:
+                    subprocess.call(call)
+                except OSError as e:
+                    error(e.strerror)
             elif sys.stdout.isatty():
                 print '%s: %s' % (f['name'], url)
 
