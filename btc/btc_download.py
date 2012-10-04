@@ -17,7 +17,7 @@ def main():
         args.windows = config['windows']
 
     if sys.stdin.isatty():
-        error('no input')
+        parser.error('no input')
     files = sys.stdin.read()
 
     if len(files.strip()) == 0:

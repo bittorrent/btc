@@ -39,7 +39,7 @@ def main():
         parser.error('cannot specify value for boolean matching')
 
     if sys.stdin.isatty():
-        error('no input')
+        parser.error('no input')
     l = sys.stdin.read()
 
     if len(l.strip()) == 0:

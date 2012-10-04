@@ -11,7 +11,7 @@ def main():
     args = parser.parse_args()
 
     if sys.stdin.isatty():
-        error('no input')
+        parser.error('no input')
     torrents = sys.stdin.read()
 
     if len(torrents.strip()) == 0:

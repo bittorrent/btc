@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
 
     if sys.stdin.isatty():
-        error('no input')
+        parser.error('no input')
     l = sys.stdin.read()
 
     if len(l.strip()) == 0:

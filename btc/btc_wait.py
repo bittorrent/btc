@@ -12,16 +12,17 @@ def main():
     args = parser.parse_args()
 
     if sys.stdin.isatty():
-        error('no input')
-    torrents = sys.stdin.read()
+        torrents = sorted(client.list_torrents(), key=lambda x: x['name'].lower())
+    else:
+        torrents = sys.stdin.read()
 
-    if len(torrents.strip()) == 0:
-        exit(0)
+        if len(torrents.strip()) == 0:
+            exit(0)
 
-    try:
-        torrents = decoder.decode(torrents)
-    except ValueError:
-        error('unexpected input: %s' % torrents)
+        try:
+            torrents = decoder.decode(torrents)
+        except ValueError:
+            error('unexpected input: %s' % torrents)
 
     hashes = [t['hash'] for t in torrents if 'fileid' not in t]
     fileids = [(t['fileid'], t['hash'], t['sid']) for t in torrents
