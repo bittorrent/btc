@@ -69,7 +69,7 @@ def usage(commands):
     print 'usage: %s <command> [<args>]' % app
     print
     print 'commands are:'
-    for c in commands:
+    for c in sorted(commands.keys()):
         if hasattr(commands[c], '_description'):
             desc = commands[c]._description
         else:
