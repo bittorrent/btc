@@ -115,12 +115,20 @@ class BTClient:
             torrent_dict['peers_connected'] = torrent_response[12]
             torrent_dict['seeds_connected'] = torrent_response[14]
             torrent_dict['size'] = torrent_response[3]
-            torrent_dict['state'] = torrent_response[21].upper().replace('[F] ', '').replace(' ', '_')
             torrent_dict['sid'] = torrent_response[22]
             torrent_dict['ul_rate'] = torrent_response[8]
             torrent_dict['dl_rate'] = torrent_response[9]
-            torrent_dict['progress'] = round(100 * float(torrent_dict['done']) / torrent_dict['size'], 2)
-
+	    if torrent_dict['size'] != 0:
+                torrent_dict['progress'] = round(100 * float(torrent_dict['done']) / torrent_dict['size'], 2)
+            else:
+                torrent_dict['progress'] = 0
+            state = torrent_response[21]
+            state = state.upper()
+            state = state.replace('[F] ', '')
+            state = state.replace(' ', '_')
+            state = re.sub(r'CHECKED.*', 'CHECKING', state)
+            state = re.sub(r'ERROR.*', 'ERROR', state)
+            torrent_dict['state'] = state
         return response
 
     def files_dict(self, response, sids={}):
