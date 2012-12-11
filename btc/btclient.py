@@ -110,11 +110,12 @@ class BTClient:
             response.append(torrent_dict)
             torrent_dict['hash'] = str(torrent_response[0].upper())
             torrent_dict['name'] = torrent_response[2]
-            torrent_dict['done'] = torrent_response[3] - torrent_response[18]
+            torrent_dict['size'] = torrent_response[3]
+            torrent_dict['downloaded'] = torrent_response[5]
+            torrent_dict['uploaded'] = torrent_response[6]
             torrent_dict['eta'] = torrent_response[10]
             torrent_dict['peers_connected'] = torrent_response[12]
             torrent_dict['seeds_connected'] = torrent_response[14]
-            torrent_dict['size'] = torrent_response[3]
             torrent_dict['sid'] = torrent_response[22]
             torrent_dict['ul_rate'] = torrent_response[8]
             torrent_dict['dl_rate'] = torrent_response[9]
