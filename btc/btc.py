@@ -32,7 +32,10 @@ def warning(msg):
 
 original_config = {}
 env_config_file = os.getenv('BTC_CONFIG_FILE')
-home_config_file = os.path.join(os.getenv('HOME'), '.btc')
+env_varname = 'HOME'
+if sys.platform.startswith('win') and 'HOME' not in os.environ:
+    env_varname = 'HOMEPATH'
+home_config_file = os.path.join(os.getenv(env_varname), '.btc')
 config_file = env_config_file if env_config_file else home_config_file
 config = {}
 
