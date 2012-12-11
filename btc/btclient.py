@@ -120,7 +120,7 @@ class BTClient:
             torrent_dict['ul_rate'] = torrent_response[8]
             torrent_dict['dl_rate'] = torrent_response[9]
 	    if torrent_dict['size'] != 0:
-                torrent_dict['progress'] = round(100 * float(torrent_dict['done']) / torrent_dict['size'], 2)
+                torrent_dict['progress'] = round(100 * float(torrent_dict['downloaded']) / torrent_dict['size'], 2)
             else:
                 torrent_dict['progress'] = 0
             state = torrent_response[21]
