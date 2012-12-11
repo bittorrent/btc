@@ -89,7 +89,7 @@ def main():
         except KeyError:
             pass
         except ValueError as e:
-            error(e.message)
+            error('value error: %s' % e.message)
 
     if args.first is not None:
         new = new[0:min(args.first,len(new))]
