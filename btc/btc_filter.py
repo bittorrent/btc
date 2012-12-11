@@ -21,7 +21,7 @@ def main():
     parser.add_argument('-s', '--case-sensitive', default=False, action='store_true')
 
     parser.add_argument('value', metavar='VALUE', nargs='?', default=None,
-                        help='string to match if no numeric or boolean operator is used')
+                        help='string or numerical value to match')
 
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('-e', '--numeric-equals', default=False, action='store_true')
