@@ -2,10 +2,13 @@ import re, os
 import json, sys
 import argparse
 import fileinput
-import collections
 import utils
 import atexit
 from btclient import BTClient, BTClientError
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 def finish():
     try:
@@ -132,7 +135,7 @@ def cmp(a, b):
 
 def ordered_dict(d1):
     vals = sorted([(k, d1[k]) for k in d1.keys()], key=cmp_to_key(cmp))
-    d2 = collections.OrderedDict(vals)
+    d2 = OrderedDict(vals)
     return d2
 
 def main():
