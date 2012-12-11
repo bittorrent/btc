@@ -82,7 +82,7 @@ def main():
                     if args.case_sensitive:
                         return x
                     return x.lower()
-                if fnmatch.fnmatch(case(str(o[args.key])), case(args.value)):
+                if fnmatch.fnmatch(case(unicode(o[args.key])), case(unicode(args.value))):
                     new.append(o)
             else:
                 new.append(o)
