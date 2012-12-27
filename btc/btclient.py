@@ -85,7 +85,7 @@ class BTClient:
     def torrent_files(self, thash, sids={}):
         if isinstance(thash, list):
             if len(thash) == 0:
-                return {}
+                return []
             thash = '&hash='.join(thash)
         l = self.send_command('action=getfiles&format=json&hash=%s' % thash)
         return self.files_dict(l, sids)
