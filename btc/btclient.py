@@ -119,10 +119,6 @@ class BTClient:
             torrent_dict['sid'] = torrent_response[22]
             torrent_dict['ul_rate'] = torrent_response[8]
             torrent_dict['dl_rate'] = torrent_response[9]
-	    if torrent_dict['size'] != 0:
-                torrent_dict['progress'] = round(100 * float(torrent_dict['downloaded']) / torrent_dict['size'], 2)
-            else:
-                torrent_dict['progress'] = 0
             state = torrent_response[21]
             state = state.upper()
             state = state.replace('[F] ', '')
@@ -130,6 +126,14 @@ class BTClient:
             state = re.sub(r'CHECKED.*', 'CHECKING', state)
             state = re.sub(r'ERROR.*', 'ERROR', state)
             torrent_dict['state'] = state
+
+            if torrent_dict['state'] == 'SEEDING':
+                torrent_dict['progress'] = 100.0
+            elif torrent_dict['size'] != 0:
+                torrent_dict['progress'] = round(100 * float(torrent_dict['downloaded']) / torrent_dict['size'], 2)
+            else:
+                torrent_dict['progress'] = 0
+
         return response
 
     def files_dict(self, response, sids={}):
