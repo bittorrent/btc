@@ -16,7 +16,7 @@ def main():
     l = sys.stdin.read()
 
     if len(l.strip()) == 0:
-        exit(0)
+        exit(1)
 
     try:
         l = decoder.decode(l)

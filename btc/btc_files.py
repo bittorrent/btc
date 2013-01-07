@@ -23,7 +23,7 @@ def main():
         torrents = sys.stdin.read()
 
         if len(torrents.strip()) == 0:
-            exit(0)
+            exit(1)
 
         try:
             torrents = decoder.decode(torrents)

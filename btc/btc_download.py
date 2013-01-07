@@ -21,7 +21,7 @@ def main():
     files = sys.stdin.read()
 
     if len(files.strip()) == 0:
-        exit(0)
+        exit(1)
 
     try:
         files = decoder.decode(files)
