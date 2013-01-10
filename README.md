@@ -3,6 +3,12 @@ BTC
 
 This project enables you to control uTorrent from the command line.
 
+License
+-------
+
+BTC is released under the [MIT](http://www.opensource.org/licenses/mit-license.php) license.
+
+
 Installation
 ------------
 
