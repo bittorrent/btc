@@ -49,7 +49,7 @@ def main():
 
         complete = float(f['downloaded']) / float(f['size']) * 100
         if sys.stdout.isatty() and complete < 100.0:
-            print 'skipping incomplete file: %s' % f['name']
+            print('skipping incomplete file: %s' % f['name'])
             continue
 
         if args.output and len(files) > 1:
@@ -64,13 +64,13 @@ def main():
                 os.makedirs(directory)
 
         if sys.stdout.isatty():
-            print 'downloading: %s' % os.path.join(args.directory, filename)
+            print('downloading: %s' % os.path.join(args.directory, filename))
 
         client.torrent_download_file(f['sid'], f['fileid'], filename, args.directory)
 
     if not sys.stdout.isatty():
         l = client.list_torrents()
-        print encoder.encode(l)
+        print(encoder.encode(l))
 
 if __name__ == '__main__':
     main()

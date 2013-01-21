@@ -100,7 +100,7 @@ def main():
     if args.invert_match:
         new = [o for o in l if o not in new]
 
-    print encoder.encode(new)
+    print(encoder.encode(new))
 
 if __name__ == '__main__':
     main()

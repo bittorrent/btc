@@ -36,7 +36,7 @@ def main():
     if args.reverse:
         l = list(reversed(l))
 
-    print encoder.encode(l)
+    print(encoder.encode(l))
 
 if __name__ == '__main__':
     main()

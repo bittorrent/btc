@@ -40,15 +40,15 @@ def main():
                 continue
             call.append(client.torrent_stream_url(f['sid'], f['fileid']))
         if sys.stdout.isatty() and args.command:
-            print 'running: %s' % ' '.join(call)
+            print('running: %s' % ' '.join(call))
             try:
                 subprocess.call(call)
             except OSError as e:
                 error(e.strerror)
         elif sys.stdout.isatty():
             for (ff, url) in zip([f['name'] for f in files if 'fileid' in f], call):
-                print '%s' % url,
-            print
+                sys.stdout.write('%s' % url)
+            print()
     else:
         for f in files:
             if 'fileid' not in f:
@@ -60,13 +60,13 @@ def main():
             url = client.torrent_stream_url(f['sid'], f['fileid'])
             call.append(url)
             if sys.stdout.isatty() and args.command:
-                print 'running: %s' % ' '.join(call)
+                print('running: %s' % ' '.join(call))
                 try:
                     subprocess.call(call)
                 except OSError as e:
                     error(e.strerror)
             elif sys.stdout.isatty():
-                print '%s: %s' % (f['name'], url)
+                print('%s: %s' % (f['name'], url))
 
 if __name__ == '__main__':
     main()

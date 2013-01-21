@@ -72,18 +72,18 @@ client = BTClient(decoder, config['host'], config['port'],
 
 def usage(commands):
     app = os.path.basename(sys.argv[0]).split(' ')[0]
-    print 'usage: %s <command> [<args>]' % app
-    print
-    print 'commands are:'
+    print('usage: %s <command> [<args>]' % app)
+    print()
+    print('commands are:')
     for c in sorted(commands.keys()):
         if hasattr(commands[c], '_description'):
             desc = commands[c]._description
         else:
             desc = 'NO _description DEFINED FOR SUBCOMMAND'
-        print '    %-10s: %s' % (c, desc)
-    print
-    print "hint: use any command and --help if lost"
-    print "hint: try to run 'btc list' to begin"
+        print('    %-10s: %s' % (c, desc))
+    print()
+    print("hint: use any command and --help if lost")
+    print("hint: try to run 'btc list' to begin")
 
 def list_to_dict(l, key):
     d = {}
@@ -157,7 +157,7 @@ def main():
 
     if sys.argv[1] not in commands:
         error('no such command: %s' % sys.argv[1], False)
-        print
+        print()
         usage(commands)
         exit(1)
 

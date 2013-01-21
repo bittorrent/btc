@@ -40,7 +40,7 @@ def main():
         hashes.append(t['hash'])
 
     if len(hashes) == 0:
-        print encoder.encode([])
+        print(encoder.encode([]))
         exit(0)
 
     files = client.torrent_files(hashes, sids)
@@ -64,7 +64,7 @@ def main():
             f['name'] = f['name'].replace('/', '\\')
 
     matched = sorted(matched, key=lambda x: x['name'].lower())
-    print encoder.encode([ordered_dict(d) for d in matched])
+    print(encoder.encode([ordered_dict(d) for d in matched]))
 
 if __name__ == '__main__':
     main()
