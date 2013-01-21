@@ -3,6 +3,7 @@ import json, sys
 import argparse
 import fileinput
 import utils
+import datetime
 
 class BTClientError(Exception):
     pass
@@ -102,6 +103,55 @@ class BTClient:
         return 'http://%s:%s@%s:%d/proxy?sid=%s&file=%d&service=DOWNLOAD&qos=0&disposition=inline' % \
           (self.username, self.password, self.host, self.port, sid, fileid)
 
+
+    def _get_state(self, status, remaining):
+        TFS_STARTED = 1
+        # the torrent is checking its file, to figure out which
+        # parts of the files we already have
+        TFS_CHECKING = 2
+        # start the torrent when the file-check completes
+        TFS_START_AFTER_CHECK = 4
+        # The files in this torrent have been checked. No need
+        # to check them again
+        TFS_CHECKED = 8
+        # An error ocurred
+        TFS_ERROR = 16
+        # The torrent is paused. i.e. all transfers are suspended
+        TFS_PAUSED = 32
+        # Auto managed. uTorrent will automatically start and stop
+        # the torrent based on the number of active torrents etc.
+        TFS_AUTO = 64
+        # The .torrent file has been loaded
+        TFS_LOADED = 128
+        # the torrent is transforming (usually copying data from
+        # another torrent in order to download a similar torrent)
+        TFS_TRANSFORMING = 256
+        # start the torrent when the transformation completes
+        TFS_START_AFTER_TRANSFORM = 512
+
+        if status & TFS_ERROR:
+            return "ERROR"
+        elif status & TFS_CHECKING:
+            return "CHECKED"
+        elif status & TFS_TRANSFORMING:
+            return "TRANSFORMING"
+        else:
+            if status & TFS_STARTED:
+                if status & TFS_PAUSED:
+                    return "PAUSED"
+                elif status & TFS_AUTO:
+                    return "SEEDING" if remaining == 0 else "DOWNLOADING"
+                else:
+                    return "SEEDING_FORCED" if remaining == 0 else "DOWNLOADING_FORCED"
+            else:
+                if status & TFS_PAUSED:
+                    return "PAUSED"
+                elif remaining == 0:
+                    return "QUEUED_SEED" if status & TFS_AUTO else "FINISHED"
+                else:
+                    return "QUEUED" if status & TFS_AUTO else "STOPPED"
+
+
     def torrent_list(self, response):
         response_dict = self.decoder.decode(response)
         response = []
@@ -109,30 +159,31 @@ class BTClient:
             torrent_dict = {}
             response.append(torrent_dict)
             torrent_dict['hash'] = str(torrent_response[0].upper())
+            torrent_dict['state_code'] = torrent_response[1]
             torrent_dict['name'] = torrent_response[2]
             torrent_dict['size'] = torrent_response[3]
+            torrent_dict['progress'] = round(torrent_response[4] / 10., 2)
             torrent_dict['downloaded'] = torrent_response[5]
             torrent_dict['uploaded'] = torrent_response[6]
+            torrent_dict['ratio'] = torrent_response[7]
+            torrent_dict['upload_rate'] = torrent_response[8]
+            torrent_dict['downloadl_rate'] = torrent_response[9]
             torrent_dict['eta'] = torrent_response[10]
+            torrent_dict['label'] = torrent_response[11]
             torrent_dict['peers_connected'] = torrent_response[12]
+            torrent_dict['peers'] = torrent_response[13]
             torrent_dict['seeds_connected'] = torrent_response[14]
+            torrent_dict['seeds'] = torrent_response[15]
+            torrent_dict['avail_factor'] = torrent_response[16]
+            torrent_dict['order'] = torrent_response[17]
+            torrent_dict['remaining'] = torrent_response[18]
+            torrent_dict['download_url'] = torrent_response[19]
+            torrent_dict['feed_url'] = torrent_response[20]
             torrent_dict['sid'] = torrent_response[22]
-            torrent_dict['ul_rate'] = torrent_response[8]
-            torrent_dict['dl_rate'] = torrent_response[9]
-            state = torrent_response[21]
-            state = state.upper()
-            state = state.replace('[F] ', '')
-            state = state.replace(' ', '_')
-            state = re.sub(r'CHECKED.*', 'CHECKING', state)
-            state = re.sub(r'ERROR.*', 'ERROR', state)
-            torrent_dict['state'] = state
-
-            if torrent_dict['state'] == 'SEEDING':
-                torrent_dict['progress'] = 100.0
-            elif torrent_dict['size'] != 0:
-                torrent_dict['progress'] = round(100 * float(torrent_dict['downloaded']) / torrent_dict['size'], 2)
-            else:
-                torrent_dict['progress'] = 0
+            torrent_dict['date_added'] = '%s' % datetime.datetime.fromtimestamp(torrent_response[23])
+            torrent_dict['date_completed'] = '%s' % datetime.datetime.fromtimestamp(torrent_response[24])
+            torrent_dict['folder'] = torrent_response[26]
+            torrent_dict['state'] = self._get_state(torrent_response[1], torrent_dict['remaining'])
 
         return response
 
@@ -150,13 +201,22 @@ class BTClient:
                     f = dict()
                     if h in sids:
                         f['sid'] = sids[h]
+
                     f['fileid'] = i
                     f['hash'] = h.upper()
                     f['name'] = l[0]
                     f['size'] = l[1]
                     f['downloaded'] = l[2]
                     f['priority'] = l[3]
-                    f['progress'] = round(100 * float(f['downloaded']) / f['size'])
+
+                    f['streamable'] = l[4]
+                    f['encoded_rate'] = l[5]
+                    f['duration'] = l[6]
+                    f['width'] = l[7]
+                    f['height'] = l[8]
+                    f['time_to_play'] = l[9]
+
+                    f['progress'] = round(100. * l[2] / l[1], 2)
                     response.append(f)
                     i += 1
 
