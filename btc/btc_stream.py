@@ -48,7 +48,7 @@ def main():
         elif sys.stdout.isatty():
             for (ff, url) in zip([f['name'] for f in files if 'fileid' in f], call):
                 sys.stdout.write('%s' % url)
-            print()
+            print('')
     else:
         for f in files:
             if 'fileid' not in f:

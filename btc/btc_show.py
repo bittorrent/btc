@@ -35,7 +35,7 @@ def main():
                         error('key not found: {}'.format(args.key))
                 else:
                     if i != 0:
-                        print()
+                        print('')
                     items = list(e.items())
                     items = sorted(items, key=lambda x: x[0])
                     print('\n'.join(['{}: {}'.format(k, v) for k, v in items]))
