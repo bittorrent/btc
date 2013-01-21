@@ -26,12 +26,12 @@ encoder = json.JSONEncoder(indent = 2)
 decoder = json.JSONDecoder()
 
 def error(msg, die=True):
-    sys.stderr.write('%s: error: %s\n' % (os.path.basename(sys.argv[0]), msg))
+    sys.stderr.write('%s: error: %s%s' % (os.path.basename(sys.argv[0]), msg, os.linesep))
     if die:
         exit(1)
 
 def warning(msg):
-    sys.stderr.write('%s: warning: %s\n' % (os.path.basename(sys.argv[0]), msg))
+    sys.stderr.write('%s: warning: %s%s' % (os.path.basename(sys.argv[0]), msg, os.linesep))
 
 original_config = {}
 env_config_file = os.getenv('BTC_CONFIG_FILE')
@@ -50,7 +50,7 @@ if os.path.exists(config_file):
             original_config = decoder.decode(content)
         except:
             msg = 'settings file parse error: %s' % config_file
-            msg += '\n\ncontent is:\n%s' % content
+            msg += '%scontent is:\n%s' % (2 * os.linesep, content)
             error(msg)
     _c.close()
 
@@ -169,11 +169,11 @@ def main():
         module.main()
     except utils.HTTPError:
         verb = os.path.exists(config_file) and 'modify the' or 'create a'
-        msg = 'connection failed, try to %s settings file\n' % verb
-        msg += 'note: settings file is: %s\n' % config_file
-        msg += 'note: current settings are:\n'
+        msg = 'connection failed, try to %s settings file%s' % (verb, os.linesep)
+        msg += 'note: settings file is: %s%s' % (config_file, os.linesep)
+        msg += 'note: current settings are:%s' % os.linesep
         for k in sorted(config.keys):
-            msg += '    %8s: %s\n' % (k, config[k])
+            msg += '    %8s: %s%s' % (k, config[k], os.linesep)
         msg += "\nhint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1])
     except BTClientError as e:

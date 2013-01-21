@@ -1,6 +1,7 @@
 import argparse
 import fnmatch
 import sys
+import os
 import re
 from .btc import encoder, decoder, error
 
@@ -38,7 +39,7 @@ def main():
                         print('')
                     items = list(e.items())
                     items = sorted(items, key=lambda x: x[0])
-                    print('\n'.join(['{}: {}'.format(k, v) for k, v in items]))
+                    print(os.linesep.join(['{}: {}'.format(k, v) for k, v in items]))
             else:
                 error('unexpected input: {}'.format(e))
             i += 1
