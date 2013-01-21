@@ -6,6 +6,8 @@ from .btc import encoder, decoder, error
 
 _description = 'filter elements of a list'
 
+# TODO: add support for dates (date_added, date_completed)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--nth', metavar='N',

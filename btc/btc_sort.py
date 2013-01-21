@@ -4,6 +4,8 @@ from .btc import encoder, decoder, error, list_to_dict, dict_to_list
 
 _description = 'sort elements of a list'
 
+# TODO: add support for dates (date_added, date_completed)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key', default='name')
