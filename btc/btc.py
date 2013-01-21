@@ -172,7 +172,7 @@ def main():
         msg = 'connection failed, try to %s settings file\n' % verb
         msg += 'note: settings file is: %s\n' % config_file
         msg += 'note: current settings are:\n'
-        for k in config:
+        for k in sorted(config.keys):
             msg += '    %8s: %s\n' % (k, config[k])
         msg += "\nhint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1])
