@@ -6,10 +6,6 @@ __author_email__ = 'clement@bittorrent.com'
 from setuptools import setup, find_packages
 import sys
 
-if sys.version_info[0] == 3:
-    sys.stderr.write('error: sorry but support for python 3.x will be added soon!\n')
-    exit(1)
-
 requires = [ 'httplib2' ]
 
 if sys.version_info[0] == 2 and sys.version_info[1] < 7:
