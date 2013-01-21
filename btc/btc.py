@@ -134,7 +134,7 @@ def cmp(a, b):
         return a < b and -1 or 1
 
 def ordered_dict(d1):
-    vals = sorted([(k, d1[k]) for k in d1.keys()], key=cmp_to_key(cmp))
+    vals = sorted([(k, d1[k]) for k in list(d1.keys())], key=cmp_to_key(cmp))
     d2 = OrderedDict(vals)
     return d2
 
