@@ -15,7 +15,7 @@ def main():
             if args.case_sensitive:
                 return x
             return x.lower()
-        l = filter(lambda x: fnmatch.fnmatch(case(x['name']), case(args.name)), l)
+        l = [x for x in l if fnmatch.fnmatch(case(x['name']), case(args.name))]
 
     print(encoder.encode([ordered_dict(d) for d in l]))
 
