@@ -10,7 +10,7 @@ class Cookie (dict):
         super(Cookie, self).__init__(wevs)
 
     def __str__(self):
-        return '; '.join('{0}={1}'.format(k,v) for k,v in self.iteritems())
+        return '; '.join('{0}={1}'.format(k,v) for k,v in self.items())
 
     def update(self, new):
         super(Cookie, self).update(Cookie(new))
