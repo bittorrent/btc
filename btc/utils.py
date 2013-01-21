@@ -1,6 +1,16 @@
 import httplib2, mimetypes, base64, socket
 import re
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
+if bytes == str:
+    def f(s, *args, **kwargs):
+        return str(s)
+    bytes = f
+
 class Cookie (dict):
     pattern = re.compile(r'(.*?)=(.*?)(?:;\s*|$)')
 
@@ -67,7 +77,7 @@ def post_multipart(host, selector, fields, files, username, password):
     files is a sequence of (name, filename, value) elements for data to be uploaded as files
     Return the server's response page.
     """
-    base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+    base64string = base64.encodestring(bytes('%s:%s' % (username, password), 'ascii'))[:-1].decode('ascii')
     content_type, body = encode_multipart_formdata(fields, files)
     h = httplib2.Http(timeout=timeout)
     headers = { 'Authorization': 'Basic %s' % base64string,
@@ -83,11 +93,11 @@ def post_multipart(host, selector, fields, files, username, password):
     elif response['status'] != '200':
         raise HTTPError(response['status'])
 
-    return content
+    return content.decode('utf-8')
 
 def get(host, selector="", username=None, password=None):
     if username:
-        base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+        base64string = base64.encodestring(bytes('%s:%s' % (username, password), 'ascii'))[:-1].decode('ascii')
     h = httplib2.Http(timeout=timeout)
     if username:
         headers = { 'Authorization': 'Basic %s' % base64string,
@@ -103,4 +113,4 @@ def get(host, selector="", username=None, password=None):
     elif response['status'] != '200':
         raise HTTPError(response['status'])
 
-    return content
+    return content.decode('utf-8')
