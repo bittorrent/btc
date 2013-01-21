@@ -1,7 +1,7 @@
 import argparse
 import sys
 import os
-from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client, config
+from .btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client, config
 
 _description = 'download torrent file locally'
 

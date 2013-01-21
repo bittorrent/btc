@@ -2,9 +2,9 @@ import re, os
 import json, sys
 import argparse
 import fileinput
-import utils
 import atexit
-from btclient import BTClient, BTClientError
+from . import utils
+from .btclient import BTClient, BTClientError
 try:
     from collections import OrderedDict
 except ImportError:

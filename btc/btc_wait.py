@@ -1,8 +1,8 @@
 import argparse
-import btclient
 import sys
 import time
-from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
+from . import btclient
+from .btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
 _description = 'wait for torrents or files download to complete'
 

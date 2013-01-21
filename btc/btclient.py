@@ -2,8 +2,8 @@ import re, os
 import json, sys
 import argparse
 import fileinput
-import utils
 import datetime
+from . import utils
 
 class BTClientError(Exception):
     pass

@@ -2,7 +2,7 @@ import argparse
 import sys
 import fnmatch
 import os
-from btc import encoder, decoder, error, warning, client, ordered_dict, config
+from .btc import encoder, decoder, error, warning, client, ordered_dict, config
 
 _description = 'list files of torrents'
 

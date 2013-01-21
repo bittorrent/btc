@@ -2,7 +2,7 @@ import argparse
 import fnmatch
 import sys
 import re
-from btc import encoder, decoder, error
+from .btc import encoder, decoder, error
 
 _description = 'filter elements of a list'
 

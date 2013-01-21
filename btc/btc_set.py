@@ -1,7 +1,7 @@
 import argparse
 import sys
 import os
-from btc import encoder, decoder, error, config_file, original_config
+from .btc import encoder, decoder, error, config_file, original_config
 
 _description = 'manage settings file'
 

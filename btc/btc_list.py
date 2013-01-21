@@ -1,6 +1,6 @@
 import argparse
 import fnmatch
-from btc import encoder, decoder, client, ordered_dict
+from .btc import encoder, decoder, client, ordered_dict
 
 _description = 'list client torrents'
 

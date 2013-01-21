@@ -3,7 +3,7 @@ import argparse
 import sys
 import re
 import os
-from btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client
+from .btc import encoder, decoder, error, warning, list_to_dict, dict_to_list, client
 
 _description = 'stream torrent file locally'
 

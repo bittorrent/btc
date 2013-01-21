@@ -1,11 +1,11 @@
 import argparse
-import btclient
 import time
-from bencode import bdecode, bencode
-import utils
 import hashlib
 import os
-from btc import encoder, decoder, client, error
+from . import btclient
+from . import utils
+from .bencode import bdecode, bencode
+from .btc import encoder, decoder, client, error
 
 _description = 'add torrent to client'
 

@@ -1,7 +1,7 @@
 import argparse
 import sys
 import time
-from btc import encoder, decoder, error, list_to_dict, dict_to_list, client
+from .btc import encoder, decoder, error, list_to_dict, dict_to_list, client
 
 _description = 'remove torrent'
 
