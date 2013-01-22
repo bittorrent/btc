@@ -172,7 +172,7 @@ def main():
         msg = 'connection failed, try to %s settings file%s' % (verb, os.linesep)
         msg += 'note: settings file is: %s%s' % (config_file, os.linesep)
         msg += 'note: current settings are:%s' % os.linesep
-        for k in sorted(config.keys):
+        for k in sorted(config.keys()):
             msg += '    %8s: %s%s' % (k, config[k], os.linesep)
         msg += "\nhint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1])
