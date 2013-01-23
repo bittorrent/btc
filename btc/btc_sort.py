@@ -1,6 +1,7 @@
 import argparse
 import sys
-from .btc import encoder, decoder, error, list_to_dict, dict_to_list
+from .btc import encoder, decoder, error, list_to_dict, dict_to_list, ordered_dict
+
 try:
     unicode
 except NameError:
@@ -42,7 +43,7 @@ def main():
     if args.reverse:
         l = list(reversed(l))
 
-    print(encoder.encode(l))
+    print(encoder.encode([ordered_dict(d) for d in l]))
 
 if __name__ == '__main__':
     main()

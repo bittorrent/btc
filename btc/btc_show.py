@@ -3,7 +3,7 @@ import fnmatch
 import sys
 import os
 import re
-from .btc import encoder, decoder, error
+from .btc import encoder, decoder, error, ordered_dict
 
 _description = 'show values and items'
 
@@ -37,8 +37,7 @@ def main():
                 else:
                     if i != 0:
                         print('')
-                    items = list(e.items())
-                    items = sorted(items, key=lambda x: x[0])
+                    items = list(ordered_dict(e).items())
                     print(os.linesep.join(['{}: {}'.format(k, v) for k, v in items]))
             else:
                 error('unexpected input: {}'.format(e))
