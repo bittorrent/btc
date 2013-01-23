@@ -24,8 +24,8 @@ def main():
     if args.url:
         args.value = utils.httpize(args.value)
         try:
-            torrent = utils.get(args.value)
-        except:
+            torrent = utils.get(args.value, utf8=False)
+        except utils.HTTPError:
             error('invalid url: %s' % args.value)
         client.add_torrent_url(args.value)
     elif args.file:

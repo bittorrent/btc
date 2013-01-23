@@ -95,7 +95,7 @@ def post_multipart(host, selector, fields, files, username, password):
 
     return content.decode('utf-8')
 
-def get(host, selector="", username=None, password=None):
+def get(host, selector="", username=None, password=None, utf8=True):
     if username:
         base64string = base64.encodestring(bytes('%s:%s' % (username, password), 'ascii'))[:-1].decode('ascii')
     h = httplib2.Http(timeout=timeout)
@@ -113,4 +113,6 @@ def get(host, selector="", username=None, password=None):
     elif response['status'] != '200':
         raise HTTPError(response['status'])
 
-    return content.decode('utf-8')
+    if utf8:
+        return content.decode('utf-8')
+    return content
