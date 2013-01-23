@@ -177,7 +177,7 @@ def main():
         msg += "\nhint: you can use 'btc set key value' to modify settings\n"
         error(msg[0:len(msg) - 1])
     except BTClientError as e:
-        error(e.message)
+        error('%s' % e)
     except KeyboardInterrupt:
         pass
     except IOError:
