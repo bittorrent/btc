@@ -1,6 +1,10 @@
 import argparse
 import sys
 from .btc import encoder, decoder, error, list_to_dict, dict_to_list
+try:
+    unicode
+except NameError:
+    unicode = str
 
 _description = 'sort elements of a list'
 

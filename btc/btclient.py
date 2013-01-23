@@ -5,6 +5,11 @@ import fileinput
 import datetime
 from . import utils
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 class BTClientError(Exception):
     pass
 

@@ -4,6 +4,11 @@ import sys
 import re
 from .btc import encoder, decoder, error
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 _description = 'filter elements of a list'
 
 # TODO: add support for dates (date_added, date_completed)
