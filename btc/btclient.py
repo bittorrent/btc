@@ -18,8 +18,10 @@ class BTClient:
 
     def get_token_argument(self):
         response = self.send_command(root='/gui/token.html', token=False)
-        l = re.findall(r"<html><div id='token' style='display:none;'>(.*)</div></html>", response)
-        return str(l[0])
+        m = re.sub(r"<.*?>", "", response)
+        if not m:
+            raise BTClientError('token authentification problem')
+        return str(m)
 
     def send_command(self, params='', root='/gui/', token=True,
                      torrent_file=None, username=None, password=None):
