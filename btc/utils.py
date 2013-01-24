@@ -37,24 +37,24 @@ def encode_multipart_formdata(fields, files):
     files is a sequence of (name, filename, value) elements for data to be uploaded as files
     Return (content_type, body) ready for httplib.HTTP instance
     """
-    BOUNDARY = '----------ThIs_Is_tHe_bouNdaRY_$'
-    CRLF = '\r\n'
+    BOUNDARY = b'----------ThIs_Is_tHe_bouNdaRY_$'
+    CRLF = b'\r\n'
     L = []
     for (key, value) in fields:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"' % key)
-        L.append('')
+        L.append(b'--' + BOUNDARY)
+        L.append(bytes('Content-Disposition: form-data; name="%s"' % key, 'ascii'))
+        L.append(b'')
         L.append(value)
     for (key, filename, value) in files:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-        L.append('Content-Type: %s' % mimetypes.guess_type(filename)[0] or 'application/octet-stream')
-        L.append('')
+        L.append(b'--' + BOUNDARY)
+        L.append(bytes('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename), 'ascii'))
+        L.append(bytes('Content-Type: %s' % mimetypes.guess_type(filename)[0] or 'application/octet-stream', 'ascii'))
+        L.append(b'')
         L.append(value)
-    L.append('--' + BOUNDARY + '--')
-    L.append('')
+    L.append(b'--' + BOUNDARY + b'--')
+    L.append(b'')
     body = CRLF.join(L)
-    content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
+    content_type = 'multipart/form-data; boundary=%s' % BOUNDARY.decode('ascii')
     return content_type, body
 
 def httpize(url):

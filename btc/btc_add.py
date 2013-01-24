@@ -43,7 +43,7 @@ def main():
 
     try:
         decoded = bdecode(torrent)
-        encoded = bencode(decoded['info'])
+        encoded = bencode(decoded[b'info'])
     except:
         error('invalid torrent file')
 
