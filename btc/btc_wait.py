@@ -37,7 +37,7 @@ def main():
         all_finished = True
 
         for h in hashes:
-            if d[h]['state'] not in ('FINISHED', 'SEEDING', 'QUEUED_SEED'):
+            if d[h]['state'] not in ('FINISHED', 'SEEDING', 'SEEDING_FORCED', 'QUEUED_SEED'):
                 all_finished = False
                 break
 
