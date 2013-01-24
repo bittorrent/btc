@@ -32,13 +32,13 @@ Located in your home folder, the settings file should be named `.btc`.
 This file has to hold a valid JSON dictionary. In order to have BTC
 talk to uTorrent we need to set `host`, `port`, `username` and
 `password` settings properly. All these settings have default values
-and an empty settings file will be equivalent to:
+so an empty settings file will be equivalent to:
 
-    default = {
-      'host': '127.0.0.1',
-      'port': 8080,
-      'username': 'admin',
-      'password': ''
+    {
+      "host': "127.0.0.1",
+      "port': 8080,
+      "username': "admin",
+      "password': ""
     }
 
 In order to keep this file clean you can use `btc set` to change
