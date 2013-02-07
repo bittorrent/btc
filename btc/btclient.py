@@ -174,7 +174,7 @@ class BTClient:
             torrent_dict['uploaded'] = torrent_response[6]
             torrent_dict['ratio'] = torrent_response[7]
             torrent_dict['upload_rate'] = torrent_response[8]
-            torrent_dict['downloadl_rate'] = torrent_response[9]
+            torrent_dict['download_rate'] = torrent_response[9]
             torrent_dict['eta'] = torrent_response[10]
             torrent_dict['label'] = torrent_response[11]
             torrent_dict['peers_connected'] = torrent_response[12]
