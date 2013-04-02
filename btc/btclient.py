@@ -64,6 +64,9 @@ class BTClient:
     def list_torrents(self):
         return self.torrent_list(self.send_command('list=1'))
 
+    def list_feeds(self):
+        return self.feed_list(self.send_command('list=1'))
+
     def add_torrent_url(self, url):
         self.send_command('action=add-url&s=%s' % url)
 
@@ -191,6 +194,24 @@ class BTClient:
             torrent_dict['date_completed'] = '%s' % datetime.datetime.fromtimestamp(torrent_response[24])
             torrent_dict['folder'] = torrent_response[26]
             torrent_dict['state'] = self._get_state(torrent_response[1], torrent_dict['remaining'])
+
+        return response
+
+    def feed_list(self, response):
+        response_dict = self.decoder.decode(response)
+        response = []
+        for feed_response in response_dict['rssfeeds']:
+            feed_dict = {}
+            response.append(feed_dict)
+            feed_dict['id'] = feed_response[0]
+            feed_dict['enabled'] = feed_response[1]
+            feed_dict['use_feed_title'] = feed_response[2]
+            feed_dict['user_selected'] = feed_response[3]
+            feed_dict['programmed'] = feed_response[4]
+            feed_dict['download_state'] = feed_response[5]
+            feed_dict['name'] = str(feed_response[6].split('|')[0])
+            feed_dict['url'] = str(feed_response[6].split('|')[1])
+            feed_dict['next_update'] = feed_response[7]
 
         return response
 
