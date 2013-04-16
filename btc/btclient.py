@@ -198,6 +198,9 @@ class BTClient:
         response_dict = self.decoder.decode(response)
         response = list()
 
+        if 'files' not in response_dict:
+            return response
+
         h = None
         for e in response_dict['files']:
             if isinstance(e, unicode):
