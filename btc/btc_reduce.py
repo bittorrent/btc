@@ -3,6 +3,7 @@ import fnmatch
 import sys
 import os
 import re
+import collections
 from .btc import encoder, decoder, error, ordered_dict
 
 _description = 'show values and items'
@@ -16,6 +17,7 @@ def main():
     group.add_argument('--max', action='store_true', default=None)
     group.add_argument('--sum', action='store_true', default=None)
     group.add_argument('--mean', action='store_true', default=None)
+    group.add_argument('--dist', action='store_true', default=None)
     group.add_argument('--count', action='store_true', default=None)
     group.add_argument('--unique', action='store_true', default=None)
     group.add_argument('--join', metavar='STR', default=None, help='string to use for a join')
@@ -58,6 +60,8 @@ def main():
         if not all(isinstance(x, float) or isinstance(x, int) for x in out):
             error('mean requires numerical values')
         f = lambda l: float(sum(l)) / len(l) if len(l) > 0 else float('nan')
+    elif args.dist:
+        f = lambda l: dict(collections.Counter(l).most_common())
     elif args.count:
         f = lambda l: len(l)
     elif args.unique:
@@ -67,7 +71,7 @@ def main():
     else:
         f = lambda l: '\n'.join(l)
 
-    if args.unique:
+    if args.unique or args.dist:
         print(encoder.encode(f(out)))
     else:
         print(f(out))
