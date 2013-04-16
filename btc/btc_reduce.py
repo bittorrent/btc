@@ -16,6 +16,8 @@ def main():
     group.add_argument('--max', action='store_true', default=None)
     group.add_argument('--sum', action='store_true', default=None)
     group.add_argument('--mean', action='store_true', default=None)
+    group.add_argument('--count', action='store_true', default=None)
+    group.add_argument('--unique', action='store_true', default=None)
     group.add_argument('--join', metavar='STR', default=None, help='string to use for a join')
     args = parser.parse_args()
 
@@ -56,12 +58,19 @@ def main():
         if not all(isinstance(x, float) or isinstance(x, int) for x in out):
             error('mean requires numerical values')
         f = lambda l: float(sum(l)) / len(l) if len(l) > 0 else float('nan')
+    elif args.count:
+        f = lambda l: len(l)
+    elif args.unique:
+        f = lambda l: list(set(l))
     elif args.join is not None:
         f = lambda l: args.join.join(l)
     else:
         f = lambda l: '\n'.join(l)
 
-    print(f(out))
+    if args.unique:
+        print(encoder.encode(f(out)))
+    else:
+        print(f(out))
 
 if __name__ == '__main__':
     main()
