@@ -35,10 +35,10 @@ talk to uTorrent we need to set `host`, `port`, `username` and
 so an empty settings file will be equivalent to:
 
     {
-      "host': "127.0.0.1",
-      "port': 8080,
-      "username': "admin",
-      "password': ""
+      "host": "127.0.0.1",
+      "port": 8080,
+      "username": "admin",
+      "password": ""
     }
 
 In order to keep this file clean you can use `btc set` to change
