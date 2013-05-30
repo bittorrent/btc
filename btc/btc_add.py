@@ -22,12 +22,21 @@ def main():
         args.url = not args.file
 
     if args.url:
-        args.value = utils.httpize(args.value)
-        try:
-            torrent = utils.get(args.value, utf8=False)
-        except utils.HTTPError:
-            error('invalid url: %s' % args.value)
-        client.add_torrent_url(args.value)
+        #if given URI starts with "magnet:?" then it's probably a magnet link
+        if args.value.startswith('magnet:?'):
+            #magnets with bittorrent info hash have "xt=urn:btih:"
+            if args.value.find("xt=urn:btih")>0:
+                client.add_torrent_url(args.value)
+                #TODO: Display confirmation about magnet having been added
+                #returning, because decoding torrent will report invalid file
+                return
+        else:
+            args.value = utils.httpize(args.value)
+            try:
+                torrent = utils.get(args.value, utf8=False)
+            except utils.HTTPError:
+                error('invalid url: %s' % args.value)
+            client.add_torrent_url(args.value)
     elif args.file:
         if not os.path.exists(args.value):
             error('no such file: %s' % args.value)
