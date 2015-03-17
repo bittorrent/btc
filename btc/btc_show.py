@@ -45,9 +45,9 @@ def main():
             for key in keys:
                 s = ''
                 if args.show_keys:
-                    s += '{0}{1}{0}{2}'.format(args.quote, key, args.separator)
+                    s += u'{0}{1}{0}{2}'.format(args.quote, key, args.separator)
                 try:
-                    print('{0}{1}{2}{1}'.format(s, args.quote, e[key]))
+                    print(u'{0}{1}{2}{1}'.format(s, args.quote, e[key]))
                 except KeyError:
                     error('key not found: {}'.format(key))
         else:
