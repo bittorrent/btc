@@ -90,6 +90,9 @@ class BTClient:
     def start_torrent(self, thash):
         self.send_command('action=start&hash=%s' % thash)
 
+    def recheck_torrent(self, thash):
+        self.send_command('action=recheck&hash=%s' % thash)
+
     def torrent_files(self, thash, sids={}):
         if isinstance(thash, list):
             if len(thash) == 0:
