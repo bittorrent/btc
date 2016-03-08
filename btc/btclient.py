@@ -226,7 +226,10 @@ class BTClient:
                     f['height'] = l[8]
                     f['time_to_play'] = l[9]
 
-                    f['progress'] = round(100. * l[2] / l[1], 2)
+                    if not l[1]:
+			f['progress'] = 0.0
+                    else:
+			f['progress'] = round(100. * l[2] / l[1], 2)
                     response.append(f)
                     i += 1
 
